@@ -3,7 +3,8 @@ DEVOPS24 Git Repo
 
 ## Lab Environment
 
-This repo contains a Vagrantfile to serve as the basis of your lab environment.
+This repo contains a directory (`lab_environment^) with a Vagrantfile to serve as the basis
+of your lab environment.
 
 To use it, you need:
 
