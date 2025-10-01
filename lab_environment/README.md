@@ -22,7 +22,7 @@ If successful, this should set up a couple of virtual machines via libvirt.
 They should be accessible by name in case your operating system / libvirt setup
 allows it, i.e:
 
-    $ ssh -i deploy.pub -l deploy webserver
+    $ ssh -i deploy_key -l deploy webserver
 
 should make it possible to SSH into the machine.
 
