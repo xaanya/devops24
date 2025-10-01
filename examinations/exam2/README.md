@@ -49,7 +49,7 @@ The `hosts` file in the same directory should contain:
     [web]
     <IP or name from the Vagrant webserver host>
 
-Anything within square brackets '[' and ']' are section names. _all_ is a section
+Anything within square brackets ('[' and ']') are section names. _all_ is a section
 for things that apply to all VMs in this inventory. The section name ending in
 '_:vars_' contain variable key/values. Almost every name except _all_ is a valid
 name for any section name.
