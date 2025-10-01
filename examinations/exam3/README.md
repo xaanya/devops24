@@ -137,7 +137,7 @@ How do we now remove the software we installed through the playbook above?
 What happens when you run `ansible-playbook` with different options?
 
 Explain what each of these options do:
-* --verbose
+* --verbose, -vv, -vvv, -vvvv
 * --check
 * --syntax-check
 
