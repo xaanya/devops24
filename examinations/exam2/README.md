@@ -14,7 +14,9 @@ the configuration there.
 Create a directory for Ansible in your home directory. You can call it
 anything, as long as you remember what it is.
 
-In our dedicated Ansible directory, create a file called `ansible.cfg`.
+In our dedicated Ansible directory, create a file called `ansible.cfg`
+(there is an example `ansible.cfg` in this same directory that you
+ may copy).
 
 Put the following content (only two lines) into this file:
 
@@ -78,6 +80,30 @@ substituted for the actual values, you should be able to do
 The actual values above may be different in your exact setup, but the `SUCCESS`
 values should give an indication that Ansible is able to login to each host
 via SSH.
+
+### Troubleshooting
+
+If you get a warning from Ansible that looks something like this
+
+    [WARNING]: Platform linux on host dbserver is using the discovered Python interpreter at /usr/bin/python3.12, but
+    future installation of another Python interpreter could change the meaning of that path. See
+    https://docs.ansible.com/ansible-core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+To disable the warning, you may follow the suggestion on the web page above, i.e. in the `ansible.cfg`:
+
+    [defaults]
+    ...
+    interpreter_python = python3
+    ...
+
+This will set the interpreter statically to `python3` which should be available on most modern operating systems.
+
+You can also set it to
+
+    interpreter_python = auto_silent
+
+to make ansible figure out which Python interpreter to use, but stop giving warnings about potential future
+incompatibilities.
 
 ## QUESTION A
 
