@@ -82,12 +82,12 @@ You will notice you ran into a problem:
     fatal: [dbserver]: FAILED! => {"changed": false, "msg": "This command has to be run under the root user.", "results": []}
     fatal: [webserver]: FAILED! => {"changed": false, "msg": "This command has to be run under the root user.", "results": []}
 
-Obviously, it tells us we have to be `root` to install packages. Very well... we change our playbook so
-it includes a line with
+Obviously, it tells us we have to be `root` to install packages. Very well... we make a
+small change to the task that fails in our playbook, and include a line with
 
     become: true
 
-for the task that complained about this. So, the task itself should now look like:
+for that task. When we do this, the task itself should now look like:
 
     - name: Ensure vim, bash-completion, and qemu-guest-agent are installed
       become: true
@@ -131,6 +131,15 @@ We now know how use Ansible to perform changes, and to ensure these changes are 
 next time we run the playbook. This is a concept called _idempotency_.
 
 How do we now remove the software we installed through the playbook above?
+
+## BONUS QUESTION
+
+What happens when you run `ansible-playbook` with different options?
+
+Explain what each of these options do:
+* --verbose
+* --check
+* --syntax-check
 
 ## Study Material & Documentation
 
