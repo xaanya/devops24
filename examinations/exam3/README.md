@@ -130,7 +130,8 @@ What is the variable 'ansible_facts' and where does it come from?
 We now know how use Ansible to perform changes, and to ensure these changes are still there
 next time we run the playbook. This is a concept called _idempotency_.
 
-How do we now remove the software we installed through the playbook above?
+How do we now remove the software we installed through the playbook above? Make the
+playbook remove the exact same software we previously installed.
 
 ## BONUS QUESTION
 
