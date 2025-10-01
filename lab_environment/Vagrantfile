@@ -54,7 +54,7 @@ Vagrant.configure("2") do |config|
       printf "%%deploy ALL=(ALL) NOPASSWD: ALL\n" > /etc/sudoers.d/deploy
       umask 077
       mkdir --parents /home/deploy/.ssh
-      printf "#{public_key}\n" > /home/deploy/.ssh/authorized_keys
+      printf "#{public_key}" > /home/deploy/.ssh/authorized_keys
       chown --recursive deploy:deploy ~deploy
       ip -c a s eth0
     SHELL
