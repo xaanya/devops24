@@ -31,3 +31,7 @@ other VM without a password?
 
 * man ssh-keygen(1)
 * ssh-copy-id(1) or use a text editor
+
+### BONUS QUESTION
+
+Can you run a command on a remote host via SSH? How?
