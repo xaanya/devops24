@@ -13,7 +13,7 @@ To use it, you need:
 
 Depending on your distribution, you might need to install these components in different ways.
 
-See https://vagrant-libvirt.github.io/vagrant-libvirt/
+See https://vagrant-libvirt.github.io/vagrant-libvirt/ for more details.
 
 ### Debian/Ubuntu/Kali Linux
 
