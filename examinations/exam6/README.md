@@ -31,7 +31,8 @@ to do some black magic on our own machines first.
 We will edit the file `/etc/hosts` on our host machine (i.e. the computer
 you are working on).
 
-Add the following line to this file:
+Add the following line to this file, WITHOUT removing any of the other stuff
+in this file:
 
     192.168.121.10  example.internal
 
