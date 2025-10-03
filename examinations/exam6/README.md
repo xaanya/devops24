@@ -18,6 +18,43 @@ certificates (such as the one we created earlier). This is normal, and
 since we were the ones creating the certificate, we can just add an
 exception for accepted certs, or simply use the http:// URL.
 
+We will create a _virtual host_ on our web server, that serves different
+content depending on which address it is called by via web browsers.
+
+## Configure the nginx virtual host
+
+The virtual host we will create will be called "example.internal", so that when we
+go to http://example.ínternal or https://example.internal, our own web page
+will be displayed instead. Obviously, this is a fake address, so we need
+to do some black magic on our own machines first.
+
+We will edit the file `/etc/hosts` on our host machine (i.e. the computer
+you are working on).
+
+Add the following line to this file:
+
+    192.168.121.10  example.internal
+
+Note that you need to be `root` to be able to edit this file, and that the address
+given above is just an example. The actual IP of your `webserver` machine is
+what we are interested in.
+
+See if you now can resolve the name `example.internal`:
+
+    $ $ ping -c 1 example.internal
+    PING example.internal (192.168.121.10) 56(84) bytes of data.
+    64 bytes from example.internal (192.168.121.10): icmp_seq=1 ttl=64 time=0.446 ms
+    
+    --- example.internal ping statistics ---
+    1 packets transmitted, 1 received, 0% packet loss, time 0ms
+    rtt min/avg/max/mdev = 0.446/0.446/0.446/0.000 ms
+
+Again, the actual IP address it resolves to may be different on your machine.
+
+If you have come this far, we can now move on to the next step.
+
+## Upload our web page to the virtual host directory
+
 Let's make a web page and upload to the web server so we can display our
 own content instead.
 
