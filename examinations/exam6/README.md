@@ -23,18 +23,20 @@ own content instead.
 
 Make a web page that looks something like this:
 
-    <?xml version="1.0"?`>
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <title>Hello Nackademin!</title>
-      </head>
-      <body>
-        <h1>Hello Nackademin!</h1>
-        <p>This is a totally awesome web page</p>
-        <p>This page has been uploaded with <a href="https://www.ansible.com">Ansible</a>!</p>
-      </body>
-    </html>
+```html
+<?xml version="1.0"?`>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hello Nackademin!</title>
+  </head>
+  <body>
+    <h1>Hello Nackademin!</h1>
+    <p>This is a totally awesome web page</p>
+    <p>This page has been uploaded with <a href="https://www.ansible.com">Ansible</a>!</p>
+  </body>
+</html>
+```
 
 Note that this web page follows the HTML standards from W3C, in case you are
 interested in why it looks the ways it does: https://html.spec.whatwg.org/multipage/
