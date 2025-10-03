@@ -75,9 +75,75 @@ Make a web page that looks something like this:
   </body>
 </html>
 ```
-
 Note that this web page follows the HTML standards from W3C, in case you are
 interested in why it looks the ways it does: https://html.spec.whatwg.org/multipage/
 
 There is a copy of this file in the `files/index.html` directory adjacent to where
-you are reading this file.
+you are reading this file. Make sure this file exists in the directory `files/` in your
+Ansible working directory.
+
+We will create the directory from where the web server will serve the pages under `example.internal`
+in `/var/www/example.internal/html`.
+
+Before we do that, we need to configure `nginx` to find the web pages in the new directory.
+
+In the `files/` directory, there is an `nginx` configuration file for `example.internal` called
+`files/example.internal.conf`. Copy this file into `files/` in your Ansible working directory.
+
+Before we do anything else, we will use Ansible to copy this file to `/etc/nginx/conf.d/example.internal.conf`
+and then restart the web server.
+
+Add a task to the `web.yml` playbook BEFORE the web server is restarted that looks like this:
+
+    - name: Ensure the nginx configuration is updated for example.internal
+      ansible.builtin.copy:
+        src: files/example.internal.conf
+        dest: /etc/nginx/conf.d/example.internal.conf
+
+You may now rerun the example playbook and see what happens.
+
+# QUESTION A
+
+In the earlier playbook we created to configure the webserver, `web.yml`, add a couple of tasks:
+
+* One task to create the directory structure under `/var/www/example.internal/html/`.
+* One task to upload our `files/index.html` file to `/var/www/example.internal/html/index.html`.
+
+HINTS:
+* The module for creating a directory is, somewhat counterintuitively, called
+[ansible.builtin.file](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html)
+
+# QUESTION B
+
+To each of the tasks that change configuration files in the webserver, add a `register: [variable_name]`.
+
+As an example:
+
+    - name: Set up configuration for HTTPS
+      ansible.builtin.copy:
+        src: files/https.conf
+        dest: /etc/nginx/conf.d/https.conf
+      register: result
+
+When the task is run, the result of the task is saved into the variable `result`. This result can be compared
+with the keyword `change`.
+
+With the use of the `when:` keyword, make a conditional that only restarts the web server if either of
+the tasks has had any change.
+
+See https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_conditionals.html#basic-conditionals-with-when
+
+There are several ways to accomplish this, and there is no `best` way to do this with what we've done so far.
+
+Is this a good way to handle these types of conditionals? What do you think?
+
+# BONUS QUESTION
+
+Imagine you had a playbook with hundreds of tasks to be done on several hosts, and each one of these tasks
+might require a restart or reload of a service.
+
+Let's say the goal is to avoid restarts as much as possible to minimize downtime and interruptions; how
+would you like the flow to work?
+
+Describe in simple terms what your preferred task flow would look like, not necessarily implemented in
+Ansible, but in general terms.
