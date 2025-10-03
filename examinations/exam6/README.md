@@ -157,7 +157,7 @@ the tasks has had any change.
 
 See https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_conditionals.html#basic-conditionals-with-when
 
-There are several ways to accomplish this, and there is no `best` way to do this with what we've done so far.
+There are several ways to accomplish this, and there is no _best_ way to do this with what we've done so far.
 
 Is this a good way to handle these types of conditionals? What do you think?
 
