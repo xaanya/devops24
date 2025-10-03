@@ -41,7 +41,7 @@ what we are interested in.
 
 See if you now can resolve the name `example.internal`:
 
-    $ $ ping -c 1 example.internal
+    $ ping -c 1 example.internal
     PING example.internal (192.168.121.10) 56(84) bytes of data.
     64 bytes from example.internal (192.168.121.10): icmp_seq=1 ttl=64 time=0.446 ms
     
