@@ -125,8 +125,32 @@ As an example:
         dest: /etc/nginx/conf.d/https.conf
       register: result
 
-When the task is run, the result of the task is saved into the variable `result`. This result can be compared
-with the keyword `change`.
+When the task is run, the result of the task is saved into the variable `result`, which is a dictionary.
+This result can be compared in a conditional with the keyword `changed`, such as
+
+    when: result is changed
+
+or
+
+    when: result.changed is true
+
+or
+
+    when: result["changed"] is true
+
+or, more succinctly:
+
+    when: result.changed
+
+or even
+
+    when: result["changed"]
+
+You can check what the variable contains after each task with adding
+
+    - name: Print the value of result
+      ansible.builtin.debug:
+        var: result
 
 With the use of the `when:` keyword, make a conditional that only restarts the web server if either of
 the tasks has had any change.
