@@ -52,21 +52,23 @@ module.
 If you have gone through the preparation part for this examinination, the certificate and the key for the
 certificate has already been created so we don't need to worry about that.
 
-In this directory, there is already a file called `https.conf`. Copy this file to your Ansible
-working directory.
+In this directory, there is already a file called `files/https.conf`. Copy this directory to your Ansible
+working directory, with the contents intact.
 
 Now, we will create an Ansible playbook that copies this file via the `ansible.builtin.copy` module
 to `/etc/nginx/conf.d/https.conf`.
 
 # QUESTION A
 
-Create a playbook, `configure-https.yml` that copies the local `https.conf` file to `/etc/nginx/conf.d/https.conf`,
-ONLY on the `web` group. Refer to the official Ansible documentation for this, or work with a classmate to
+Create a playbook, `web.yml` that copies the local `files/https.conf` file to `/etc/nginx/conf.d/https.conf`,
+and acts ONLY on the `web` group from the inventory.
+
+Refer to the official Ansible documentation for this, or work with a classmate to
 build a valid and working playbook, preferrably that conforms to Ansible best practices.
 
 Run the playbook with `ansible-playbook` and `--verbose` or `-v` as option:
 
-    $ ansible-playbook -v configure-https.yml
+    $ ansible-playbook -v web.yml
 
 The output from the playbook run contains something that looks suspiciously like JSON, and that contains
 a number of keys and values that come from the output of the Ansible module.
@@ -122,5 +124,4 @@ no configuration change?
 
 There are at least two _other_ modules, in addition to the `ansible.builtin.service` module that can restart
 a `systemd` service with Ansible. Which modules are they?
-
 
