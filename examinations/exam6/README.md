@@ -23,8 +23,8 @@ own content instead.
 
 Make a web page that looks something like this:
 
-```html
-<?xml version="1.0"?`>
+```xml
+<?xml version="1.0"?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
