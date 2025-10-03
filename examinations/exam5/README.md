@@ -103,6 +103,16 @@ how can we do this through Ansible?
 Add an extra task to the `configure-https.yml` playbook to ensure the service is restarted after the configuration
 file is installed.
 
+When you are done, verify that `nginx` serves web pages on both TCP/80 (http) and TCP/443 (https):
+
+    $ curl http://192.168.121.10
+    $ curl --insecure https://192.168.121.10
+
+Again, these addresses are just examples, make sure you use the IP of the actual webserver VM.
+
+Note also that `curl` needs the `--insecure` option to establish a connection to a HTTPS server with
+a self signed certificate.
+
 # QUESTION C
 
 What is the disadvantage of having a task that _always_ makes sure a service is restarted, even if there is
