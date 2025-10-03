@@ -12,7 +12,8 @@ the configuration there.
 ## Create ansible.cfg
 
 Create a directory for Ansible in your home directory. You can call it
-anything, as long as you remember what it is.
+anything, as long as you remember what it is. In our examples below,
+we will call it `ansible`.
 
 In our dedicated Ansible directory, create a file called `ansible.cfg`
 (there is an example `ansible.cfg` in this same directory that you
@@ -128,3 +129,25 @@ Now run:
 Study the output of this command.
 
 What does the `ansible_connection=local` part mean?
+
+## BONUS QUESTION
+
+The command `ansible-config` can be used for creating, viewing, validating, and listing
+Ansible configuration.
+
+Try running
+
+    $ ansible-config --help
+
+Make an initial configuration file with the help of this command, and write it into a file
+called `ansible.cfg.init`. HINT: Redirections in the terminal can be done with '>' or 'tee(1)'.
+
+Open this file and look at the various options you can configure in Ansible.
+
+In your Ansible working directory where the `ansible.cfg' is, run
+
+    $ ansible-config dump
+
+You should get a pager displaying all available configuration values. How does it differ
+from when you run the same command in your usual home directory?
+
