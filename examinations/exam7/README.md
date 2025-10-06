@@ -20,8 +20,6 @@ software onto the correct host(s):
 The software should, just like the web server, be started at boot, and be running
 when the playbook is finished.
 
-In order to do this, we must also know the name of the service we are starting.
-
 # QUESTION A
 
 Make similar changes to this playbook that we did for the _nginx_ server, so that
@@ -32,3 +30,7 @@ is run.
 
 When you have run the playbook above successfully, how do you verify that the `mariadb`
 service is started and is running?
+
+# BONUS QUESTION
+
+How many different ways can use come up with to verify that the `mariadb` service is running?
