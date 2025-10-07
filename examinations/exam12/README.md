@@ -25,7 +25,7 @@ This playbook has two _plays_, each play utilizing a _role_.
 
 This playbook is also included in this directory as [site.yml](site.yml).
 
-Study the Ansible documentation about roles, and then start work on [QUESTION A].
+Study the Ansible documentation about roles, and then start work on [QUESTION A](#QUESTION A).
 
 # QUESTION A
 
