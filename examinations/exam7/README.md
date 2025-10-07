@@ -28,7 +28,7 @@ is run.
 
 # QUESTION B
 
-When you have run the playbook above successfully, how do you verify that the `mariadb`
+When you have run the playbook above successfully, how can you verify that the `mariadb`
 service is started and is running?
 
 # BONUS QUESTION
