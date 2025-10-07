@@ -53,6 +53,8 @@ For now you can create empty files in the `files/` directory called anything as 
 Add a password to each user added to the playbook that creates the users. Do not write passwords in plain
 text in the playbook, but use the password hash, or encrypt the passwords using `ansible-vault`.
 
+There are various utilities that can output hashed passwords, check the FAQ for some pointers.
+
 # Resources and Documentation
 
 * [loops](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_loops.html)
