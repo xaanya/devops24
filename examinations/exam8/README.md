@@ -26,6 +26,7 @@ to authenticate as root:
 
 * The socket is located in `/var/lib/mysql/mysql.sock`
 * Since we're authenticating through a socket, we should ignore the requirement for a `~/.my.cnf` file.
+* For simplicity's sake, let's grant `ALL` privileges on `webapp.*` to `webappuser`
 
 # Documentation and Examples
 https://docs.ansible.com/ansible/latest/collections/community/mysql/index.html
