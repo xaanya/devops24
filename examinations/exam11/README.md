@@ -31,6 +31,7 @@ Use `ansible-vault` to encrypt passwords for each user created.
 
 # Resources and Documentation
 
+* [loops](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_loops.html)
 * [ansible.builtin.user](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html)
 * [ansible.builtin.fileglob](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/fileglob_lookup.html)
 
