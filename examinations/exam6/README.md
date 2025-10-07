@@ -112,6 +112,9 @@ In the earlier playbook we created to configure the webserver, `web.yml`, add a 
 HINTS:
 * The module for creating a directory is, somewhat counterintuitively, called
 [ansible.builtin.file](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html)
+* If you want to serve files under a non-standard directory (such as the one we create above), we must
+  also set the correct SELinux security context type on the directory and files. The context in question
+  in this case should be `httpd_sys_content_t` for the `/var/www/example.internal/html/` directory.
 
 # QUESTION B
 
