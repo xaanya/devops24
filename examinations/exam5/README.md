@@ -28,7 +28,6 @@ configuration:
 
     server {
         listen       443 ssl;
-        listen       [::]:443 ssl;
         http2        on;
         server_name  _;
         root         /usr/share/nginx/html;
