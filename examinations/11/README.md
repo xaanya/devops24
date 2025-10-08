@@ -59,7 +59,7 @@ There are various utilities that can output hashed passwords, check the FAQ for 
 
 # BONUS BONUS QUESTION
 
-Add the real names of the users to the GECOS field of each account. Google is your friend.
+Add the real names of the users we added earlier to the GECOS field of each account. Google is your friend.
 
 # Resources and Documentation
 
