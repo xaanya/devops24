@@ -7,7 +7,7 @@ In order to set up our web server to use HTTPS, we need to make a configuration 
 
 ## Preparations
 
-Begin by running the `install-cert.yml` playbook to generate a self-signed certificate
+Begin by running the [install-cert.yml](install-cert.yml) playbook to generate a self-signed certificate
 in the correct location on the webserver.
 
 You may need to install the Ansible `community.crypto` collection first, unless you have
@@ -59,7 +59,7 @@ to `/etc/nginx/conf.d/https.conf`.
 
 # QUESTION A
 
-Create a playbook, `web.yml` that copies the local `files/https.conf` file to `/etc/nginx/conf.d/https.conf`,
+Create a playbook, `05-web.yml` that copies the local `files/https.conf` file to `/etc/nginx/conf.d/https.conf`,
 and acts ONLY on the `web` group from the inventory.
 
 Refer to the official Ansible documentation for this, or work with a classmate to
@@ -67,7 +67,7 @@ build a valid and working playbook, preferrably that conforms to Ansible best pr
 
 Run the playbook with `ansible-playbook` and `--verbose` or `-v` as option:
 
-    $ ansible-playbook -v web.yml
+    $ ansible-playbook -v 05-web.yml
 
 The output from the playbook run contains something that looks suspiciously like JSON, and that contains
 a number of keys and values that come from the output of the Ansible module.
@@ -101,7 +101,7 @@ On the machine itself we can do this by:
 Given what we know about the [ansible.builtin.service](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html),
 how can we do this through Ansible?
 
-Add an extra task to the `configure-https.yml` playbook to ensure the service is restarted after the configuration
+Add an extra task to the `05-web.yml` playbook to ensure the service is restarted after the configuration
 file is installed.
 
 When you are done, verify that `nginx` serves web pages on both TCP/80 (http) and TCP/443 (https):
@@ -123,4 +123,3 @@ no configuration change?
 
 There are at least two _other_ modules, in addition to the `ansible.builtin.service` module that can restart
 a `systemd` service with Ansible. Which modules are they?
-
