@@ -1,6 +1,6 @@
 # Examination 2 - Configure Ansible
 
-To make things as unsurprising and difficult as possible, we will all set up
+To make things as unsurprising and easy as possible, we will all set up
 the exact same Ansible configuration in a dedicated folder for this purpose.
 
 Do not use the directory with the Vagrantfile (the `lab_environment` directory
