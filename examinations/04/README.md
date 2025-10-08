@@ -62,7 +62,7 @@ What does this accomplish?
 
 # QUESTION C
 
-Copy the above playbook to a new playbook, you can call it `uninstall.yml` or something similarly exciting.
+Copy the above playbook to a new playbook. Call it `04-uninstall-webserver.yml`.
 
 Change the ordering of the two tasks. Make the web server stop, and disable it from starting at boot, and
 make sure that `nginx` is uninstalled. Change the `name:` parameter of each task accordingly.
@@ -70,7 +70,7 @@ make sure that `nginx` is uninstalled. Change the `name:` parameter of each task
 Run the new playbook, then make sure that the web server is not running (you can use `curl` for this), and
 log in to the machine and make sure that there are no `nginx` processes running.
 
-Why did we change the order of the tasks in the `uninstall.yml` playbook?
+Why did we change the order of the tasks in the `04-uninstall-webserver.yml` playbook?
 
 # BONUS QUESTION
 
