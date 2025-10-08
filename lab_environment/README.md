@@ -1,5 +1,7 @@
 # Lab Environment Setup
 
+## Virtual Machines
+
 To setup the lab environment on your machine, just run
 
     $ vagrant up
@@ -30,3 +32,14 @@ To see more information about the machines from the command line, you can use
 
     virsh -c qemu:///system list --all
 
+## Ansible Collections
+
+In some of the examinations, you will need to use Ansible collections that may
+not be present in your installation of Ansible.
+
+To download the collections you will need, run
+
+    $ ansible-galaxy collection install -r requirements.yml
+
+This should make the collections available for _your_ user. They will not be installed
+globally.
