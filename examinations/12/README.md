@@ -29,7 +29,7 @@ Study the Ansible documentation about roles, and then start work on [QUESTION A]
 
 # QUESTION A
 
-Using the playbook above, create a role structure in your Ansible working directory
+Considering the playbook above, create a role structure in your Ansible working directory
 that implements the previous examinations as two separate roles; one for `webserver`
 and one for `dbserver`.
 
