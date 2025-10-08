@@ -11,9 +11,11 @@ the configuration there.
 
 ## Create ansible.cfg
 
-Create a directory for Ansible in your home directory. You can call it
-anything, as long as you remember what it is. In our examples below,
-we will call it `ansible`.
+Create a directory for Ansible where you will do your work. You can call it
+anything, as long as you remember what it is. Also, it should be created
+somewhere within your home directory.
+
+In our examples below, we will call it `ansible`.
 
 In our dedicated Ansible directory, create a file called `ansible.cfg`
 (there is an example `ansible.cfg` in this same directory that you
