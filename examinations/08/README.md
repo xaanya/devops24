@@ -13,12 +13,12 @@ HINT: In AlmaLinux, the correct package to install on the VM host is called `pyt
 
 # QUESTION A
 
-Use the `community.mysql` module in the playbook we created in Examination 7, so that it
-also creates a database instance called `webappdb` and a database user called `webappuser`.
+Copy the playbook from examination 7 to `08-mariadb-config.yml`.
+
+Use the `community.mysql` module in this playbook so that it also creates a database instance
+called `webappdb` and a database user called `webappuser`.
 
 Make the `webappuser` have the password "secretpassword" to access the database.
-
-You can create a separate playbook too, if you feel it makes it easier.
 
 HINT: The `community.mysql` collection modules has many different ways to authenticate
 users to the MariaDB/MySQL instance. Since we've just installed `mariadb` without setting
