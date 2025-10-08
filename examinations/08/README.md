@@ -1,7 +1,8 @@
 # Examination 8 - MariaDB configuration
 
-MariaDB and MySQL come from the same origin and work the same way, which makes it possible
-to use Ansible collections that handle `mysql` to work with `mariadb`.
+MariaDB and MySQL have the same origin (MariaDB is a fork of MySQL, because of... Oracle...
+it's a long story.) They both work the same way, which makes it possible to use Ansible
+collections that handle `mysql` to work with `mariadb`.
 
 To be able to manage MariaDB/MySQL through the `community.mysql` collection, you also
 need to make sure the requirements for the collections are installed on the database VM.
