@@ -16,6 +16,9 @@ Create a playbook `14-firewall.yml` that utilizes the [ansible.posix.firewalld](
 You will need to install `firewalld` and `python3-firewall`, and you will need to enable
 the `firewalld` service and have it running on all servers.
 
+When the playbook is run, you should be able to do the following on each of the
+servers:
+
 ## dbserver
 
     [deploy@dbserver ~]$ sudo cat /etc/firewalld/zones/public.xml
