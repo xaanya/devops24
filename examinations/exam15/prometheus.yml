@@ -28,17 +28,19 @@
         dest: /tmp/scrape-config.yml
         mode: "0644"
 
-    - name: Ensure Node Exporter container is running
-      containers.podman.podman_container:
-        name: node-exporter
-        image: quay.io/prometheus/node-exporter:latest
-
     - name: Ensure Prometheus container is running
       containers.podman.podman_container:
         name: prometheus
         image: quay.io/prometheus/prometheus:latest
+        pod: new:prometheus
         volumes:
           - "/tmp/scrape-config.yml:/etc/prometheus/prometheus.yml"
           - "prometheus_data:/data"
         ports:
           - "9090:9090"
+
+    - name: Ensure Node Exporter container is running
+      containers.podman.podman_container:
+        name: node-exporter
+        image: quay.io/prometheus/node-exporter:latest
+        pod: prometheus
