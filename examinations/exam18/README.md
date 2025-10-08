@@ -17,12 +17,12 @@ We will now write our own module, and run it through Ansible.
 Look at [Developing modules](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html)
 and create a module that
 
-* Takes one parameter, `message` that is a string.
+* Takes one parameter, `message`, that is a string.
 * Returns two values:
     - `original_message` that is the string that is passed through `message`
-    - `reversed_message` this is the string, only backwards (reversed).
+    - `reversed_message` that is the `message` string, only backwards (reversed).
 * If the `original_message` and `reversed_message` is different, the `changed` parameter should be `True`, otherwise
-  it should be false.
+  it should be `False`.
 
 When you are done, you should be able to do
 
@@ -67,3 +67,10 @@ that uses this module with the correct parameters.
 
 You don't need to worry about FQCN and namespaces in this examination.
 
+# BONUS QUESTION
+
+What is the relationship between the booleans you can use in Python, and the various "truthy/falsy" values
+you most often use in Ansible?
+
+What modules/filters are there in Ansible that can safely test for "truthy/falsy" values, and return something
+more stringent?
