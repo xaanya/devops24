@@ -6,7 +6,9 @@ and thus ITSEC surmises that the servers are vulnerable to intruders and malware
 As a first step to appeasing them, we will install and enable `firewalld` and
 enable the services needed for connecting to the web server(s) and the database server(s).
 
-Create a playbook that utilizes the [ansible.posix.firewalld](https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html) module to enable the following services in firewalld:
+# QUESTION A
+
+Create a playbook `14-firewall.yml` that utilizes the [ansible.posix.firewalld](https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html) module to enable the following services in firewalld:
 
 * On the webserver(s), `http` and `https`
 * On the database servers(s), the `mysql`
