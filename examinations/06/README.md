@@ -87,8 +87,9 @@ in `/var/www/example.internal/html`.
 
 Before we do that, we need to configure `nginx` to find the web pages in the new directory.
 
-In the `files/` directory, there is an `nginx` configuration file for `example.internal` called
-`files/example.internal.conf`. Copy this file into `files/` in your Ansible working directory.
+In the [files/](files/) directory, there is an `nginx` configuration file for `example.internal` called
+[files/example.internal.conf](files/example.internal.conf). Copy this file into `files/` in your Ansible
+working directory.
 
 Before we do anything else, we will use Ansible to copy this file to `/etc/nginx/conf.d/example.internal.conf`
 and then restart the web server.
