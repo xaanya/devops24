@@ -1,6 +1,6 @@
 # Examination 10 - Templating
 
-With the installation of the web server earlier in Examination 5, we set up
+With the installation of the web server earlier in Examination 6, we set up
 the `nginx` web server with a static configuration file that listened to all
 interfaces on the (virtual) machine.
 
@@ -19,6 +19,8 @@ If you look at the `nginx` documentation, note that you don't have to enable any
 on the web server. Stick to IPv4 for now.
 
 # QUESTION A
+
+Copy the finished playbook from Examination 6 (`06-web.yml`) and call it `10-web-template.yml`.
 
 Make the static configuration file we used earlier into a Jinja template file,
 and set the values for the `listen` parameters to include the external IP
