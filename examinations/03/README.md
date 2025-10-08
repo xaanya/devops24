@@ -70,7 +70,7 @@ Make a new playbook, or edit the previous one, so that it looks like this:
             name: vim,bash-completion,qemu-guest-agent
             state: present
 
-You can call it whatever you like, in this example, the name is `site.yml`.
+You can call it whatever you like, in this example, here the name is `site.yml`.
 
 Run this playbook, just like before:
 
@@ -131,7 +131,8 @@ We now know how to use Ansible to perform changes, and to ensure these changes a
 next time we run the playbook. This is a concept called _idempotency_.
 
 How do we now remove the software we installed through the playbook above? Make the
-playbook remove the exact same software we previously installed.
+playbook remove the exact same software we previously installed. Call the created
+playbook `03-uninstall-software.yml`.
 
 ## BONUS QUESTION
 
