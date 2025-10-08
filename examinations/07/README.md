@@ -6,7 +6,7 @@ To make a dynamic web site, many use an SQL server to store the data for the web
 to use for our purposes.
 
 We can use a similar strategy as with the _nginx_ web server to install this
-software onto the correct host(s):
+software onto the correct host(s). Create the playbook `07-mariadb.yml` with this content:
 
     ---
     - hosts: db
@@ -16,9 +16,6 @@ software onto the correct host(s):
           ansible.builtin.package:
             name: mariadb-server
             state: present
-
-The software should, just like the web server, be started at boot, and be running
-when the playbook is finished.
 
 # QUESTION A
 
