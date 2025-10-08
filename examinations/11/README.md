@@ -10,9 +10,10 @@ Imagine that on the web server(s), the IT department wants a number of users acc
 These requirements are also requests:
 
 * `alovelace` and `ghopper` should be added to the `wheel` group.
-* `aturing` and `edijkstra` should be added to the `tcpdump` group.
-* `alovelace` should also be in the `audio` and `video` group.
-* 'ghopper' should be in the `audio` group, but not in the `video` group.
+* `aturing` should be in the `tape` group
+* `edijkstra` should be added to the `tcpdump` group.
+* `alovelace` should be added to the `audio` and `video` groups.
+* `ghopper` should be in the `audio` group, but not in the `video` group.
 
 Also, the IT department, for some unknown reason, wants to copy a number of '\*.md' files
 to the 'deploy' user's home directory on the `db` machine(s).
@@ -24,12 +25,12 @@ make it easy to see which examination it belongs to.
 
 Write a playbook that uses loops to add these users, and adds them to their respective groups.
 
-When your playbook is run, one should be able to do this:
+When your playbook is run, one should be able to do this on the webserver:
 
     [deploy@webserver ~]$ groups alovelace
     alovelace : alovelace wheel video audio
     [deploy@webserver ~]$ groups aturing
-    aturing : aturing tcpdump
+    aturing : aturing tape
     [deploy@webserver ~]$ groups edijkstra
     edijkstra : edijkstra tcpdump
     [deploy@webserver ~]$ groups ghopper
@@ -56,11 +57,14 @@ text in the playbook, but use the password hash, or encrypt the passwords using 
 
 There are various utilities that can output hashed passwords, check the FAQ for some pointers.
 
+# BONUS BONUS QUESTION
+
+Add the real names of the users to the GECOS field of each account. Google is your friend.
+
 # Resources and Documentation
 
 * [loops](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_loops.html)
 * [ansible.builtin.user](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html)
 * [ansible.builtin.fileglob](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/fileglob_lookup.html)
 * https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-encrypted-passwords-for-the-user-module
-
 
