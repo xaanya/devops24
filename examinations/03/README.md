@@ -4,7 +4,7 @@ In Examination 2 we set up our virtual machines, configured Ansible for our
 purposes and made sure we were able to connect to them through SSH and use Ansible's
 [ansible.builtin.ping](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/ping_module.html) module.
 
-In case you added the machine you are running Ansible previously, you should remove that host now,
+In case you added the machine you are running Ansible on in examination 2, you should remove that host now,
 so your inventory only contains the Vagrant hosts, as before.
 
 We are now ready to create and run our first Ansible playbooks.
