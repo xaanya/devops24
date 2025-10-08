@@ -9,7 +9,7 @@ to be run once when there is a notification of change.
 
 Read up on [Ansible handlers](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html)
 
-In the previous examination (Examination 12), we changed the structure of the project to two separate
+In the previous examination ([Examination 12](../12/)), we changed the structure of the project to two separate
 roles, `webserver` and `dbserver`.
 
 # QUESTION A
