@@ -17,6 +17,7 @@ We will now write our own module, and run it through Ansible.
 Look at [Developing modules](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html)
 and create a module that
 
+* Is called `anagrammer`
 * Takes one parameter, `message`, that is a string.
 * Returns two values:
     - `original_message` that is the string that is passed through `message`
@@ -26,7 +27,7 @@ and create a module that
 
 When you are done, you should be able to do
 
-    $ ANSIBLE_LIBRARY=./library ansible -m my_module -a 'message="hello world"' localhost
+    $ ANSIBLE_LIBRARY=./library ansible -m anagrammer -a 'message="hello world"' localhost
 
 And it should return
 
@@ -38,7 +39,7 @@ And it should return
 
 You should also be able to do
 
-    ANSIBLE_LIBRARY=./library ansible -m my_module -a 'message="sirap i paris"' localhost
+    ANSIBLE_LIBRARY=./library ansible -m anagrammer -a 'message="sirap i paris"' localhost
 
 And it should return
 
@@ -66,6 +67,14 @@ Create that directory, and copy the Ansible module you just wrote there, then ma
 that uses this module with the correct parameters.
 
 You don't need to worry about FQCN and namespaces in this examination.
+
+# QUESTION C
+
+Create a playbook called `18-anagrammer.yml` that uses this module.
+
+Make the playbook use a default variable for the message that can be overriden by using something like:
+
+    $ ansible-playbook --verbose --extra-vars message='"This is a whole other message"' 18-custom-module.yml
 
 # BONUS QUESTION
 
