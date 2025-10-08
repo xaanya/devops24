@@ -11,7 +11,7 @@ We are now ready to create and run our first Ansible playbooks.
 
 An Ansible playbook is a file written in Ansible [YAML](https://yaml.org/) format.
 
-Create a new file with the following content:
+Create a new file called `site.yml` with the following content:
 
     ---
     - name: Example Ansible playbook
