@@ -1,6 +1,6 @@
 # Examination 13 - Handlers
 
-In [Examination 5](../exam5/) we asked the question what the disadvantage is of restarting
+In [Examination 5](../05/) we asked the question what the disadvantage is of restarting
 a service every time a task is run, whether or not it's actually needed.
 
 In order to minimize the amount of restarts and to enable a complex configuration to run
