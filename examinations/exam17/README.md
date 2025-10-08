@@ -24,6 +24,15 @@ before being changed.
 
 No password is set for the `deploy` user, so begin by setting the password to `hunter12`.
 
+HINT: To construct a password hash (such as one for use in [ansible.builtin.user](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html), you can use the following command:
+
+    $ openssl passwd -6 hunter12
+
+This will give you a SHA512 password hash that you can use in the `password:` field.
+
+You can verify this by trying to login to any of the nodes without the SSH key, but using the password
+provided instead.
+
 To be able to use the password when running the playbooks later, you must use the `--ask-become-pass`
 option to `ansible` and `ansible-playbook` to provide the password. You can also place the password
 in a file, like with `ansible-vault`, or have it encrypted via `ansible-vault`.
