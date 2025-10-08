@@ -6,7 +6,8 @@
 the hardware and the kernel on a machine (virtual or not).
 
 Start by running the Prometheus server and a Node Exporter in containers on your Ansible controller
-(the you're running Ansible playbooks from).
+(the you're running Ansible playbooks from). This can be accomplished with the [prometheus.yml](prometheus.yml)
+playbook.
 
 You may need to install [podman](https://podman.io/docs/installation) first.
 
@@ -15,18 +16,21 @@ and you can browse this page in a web browser.
 
 # QUESTION A
 
-Make an Ansible playbook that installs [Node Exporter](https://prometheus.io/download/#node_exporter) on
-each of the VMs to export/expose metrics to Prometheus. Node exporter should be running as a `systemd`
-service on each of the virtual machines, and start automatically at boot.
+Make an Ansible playbook, `15-node_exporter.yml` that installs [Node Exporter](https://prometheus.io/download/#node_exporter)
+on each of the VMs to export/expose metrics to Prometheus.
+
+Node exporter should be running as a `systemd` service on each of the virtual machines, and
+start automatically at boot.
 
 You can find `systemd` unit files that you can use [here](https://github.com/prometheus/node_exporter/tree/master/examples/systemd), along with the requirements regarding users and permissions.
 
-Consider the requirements carefully, and use Ansible modules to create user(s), directories, copy files,
+Consider the requirements carefully, and use Ansible modules to create the user, directories, copy files,
 etc.
 
-Also, consider the firewall configuration we implemented earlier.
+Also, consider the firewall configuration we implemented earlier, and make sure we can talk to the node
+exporter port.
 
-HINT: To get the service names available in `firewalld`, you can use
+HINT: To get the `firewalld` service names available in `firewalld`, you can use
 
     $ firewall-cmd --get-services
 
