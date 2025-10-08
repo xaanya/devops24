@@ -46,3 +46,8 @@ and
     $ podman pod start prometheus
 
 will get you on the right track, for instance if you've changed any of the Prometheus configuration.
+
+# Resources and Information
+
+* https://github.com/prometheus/node_exporter/tree/master/examples/systemd
+* https://prometheus.io/docs/guides/node-exporter/
