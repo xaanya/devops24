@@ -94,7 +94,9 @@ working directory.
 Before we do anything else, we will use Ansible to copy this file to `/etc/nginx/conf.d/example.internal.conf`
 and then restart the web server.
 
-Add a task to the `web.yml` playbook BEFORE the web server is restarted that looks like this:
+Begin by copying the `05-web.yml` playbook to `06-web.yml`.
+
+Add a task to the `06-web.yml` playbook BEFORE the web server is restarted that looks like this:
 
     - name: Ensure the nginx configuration is updated for example.internal
       ansible.builtin.copy:
@@ -105,7 +107,7 @@ You may now rerun the example playbook and see what happens.
 
 # QUESTION A
 
-In the earlier playbook we created to configure the webserver, `web.yml`, add a couple of tasks:
+In the `06-web.yml` playbook, add a couple of tasks:
 
 * One task to create the directory structure under `/var/www/example.internal/html/`.
 * One task to upload our `files/index.html` file to `/var/www/example.internal/html/index.html`.
