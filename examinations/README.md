@@ -8,6 +8,11 @@ can. Refer to the manuals of each command, and try out the commands given (if an
 Remember you have a Vagrant environment, and can destroy and recreate the
 environment as much as you want to get back to the initial condition.
 
+The lettered QUESTIONS (A, B, C, etc.) are mandatory to attempt to solve for
+each examination. The BONUS QUESTIONS are there for enlightenment, and if you
+answer them, it will demonstrate a good understanding of the subject which plays
+into the overall evaluation and grade.
+
 The examination labs are evaluated on both established criteria and the overall
 quality of the work. This is to make sure the grades are fair and reflect the
 effort and understanding of each subject per the examinations.
