@@ -50,3 +50,10 @@ For instance:
             that: "'telnet-server' not in ansible_facts.packages"
 
 It is up to you to implement the solution you feel works best.
+
+# Resources
+
+For inspiration and as an example of an advanced project using Ansible for this, see for instance
+https://github.com/ansible-lockdown/RHEL10-CIS. Do *NOT*, however, try to run this compliance check
+on your virtual (or physical) machines. It will likely have unintended consequences, and may render
+your operating system and/or virtual machine unreachable.
