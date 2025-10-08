@@ -10,7 +10,7 @@ Imagine that on the web server(s), the IT department wants a number of users acc
 These requirements are also requests:
 
 * `alovelace` and `ghopper` should be added to the `wheel` group.
-* `aturing` should be in the `tape` group
+* `aturing` should be added to the `tape` group
 * `edijkstra` should be added to the `tcpdump` group.
 * `alovelace` should be added to the `audio` and `video` groups.
 * `ghopper` should be in the `audio` group, but not in the `video` group.
