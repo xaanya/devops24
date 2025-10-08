@@ -78,9 +78,9 @@ Make a web page that looks something like this:
 Note that this web page follows the HTML standards from W3C, in case you are
 interested in why it looks the ways it does: https://html.spec.whatwg.org/multipage/
 
-There is a copy of this file in the `files/index.html` directory adjacent to where
+There is a copy of this file in the [files/index.html](files/index.html) directory adjacent to where
 you are reading this file. Make sure this file exists in the directory `files/` in your
-Ansible working directory.
+Ansible working directory too by copying it.
 
 We will create the directory from where the web server will serve the pages under `example.internal`
 in `/var/www/example.internal/html`.
