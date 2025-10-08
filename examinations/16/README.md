@@ -5,7 +5,9 @@ on our servers. They also want our servers to pass CIS certifications.
 
 # QUESTION A
 
-Implement _at least_ 10 of the checks in the [CIS Security Benchmark](https://www.cisecurity.org/benchmark/almalinuxos_linux) for AlmaLinux 10 and run them on your servers.
+Implement _at least_ 10 of the checks in the [CIS Security Benchmark](https://www.cisecurity.org/benchmark/almalinuxos_linux) for AlmaLinux 10 and run them on the virtual machines.
+
+These checks should be run by a playbook called `16-compliance-check.yml`.
 
 *Important*: The playbook should only _check_ or _assert_ the compliance status, not perform any changes.
 
@@ -50,6 +52,10 @@ For instance:
             that: "'telnet-server' not in ansible_facts.packages"
 
 It is up to you to implement the solution you feel works best.
+
+# BONUS QUESTION
+
+If you implement these tasks within one or more roles, you will gain enlightenment and additional karma.
 
 # Resources
 
