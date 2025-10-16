@@ -7,7 +7,7 @@ Do not use the directory with the Vagrantfile (the `lab_environment` directory
 if you are using this `git` repository).
 
 Create a separate directory for this and the following examinations, and keep
-the configuration there.
+the configuration there. 
 
 ## Create ansible.cfg
 
@@ -112,9 +112,35 @@ incompatibilities.
 
 What happens if you run `ansible-inventory --list` in the directory you created above?
 
+SVAR: När jag kör "ansible-inventory --list" i din Ansible-katalog får du en JSON-utskrift som visar hela din inventarie, dvs all information som Ansible använder för att veta vilka hosts som finns och hur man ansluter till de.
+
 ## QUESTION B
 
 What happens if you run `ansible-inventory --graph` in the directory you created above?
+
+SVAR: 
+
+@all:
+  |--@ungrouped:
+  |--@db:
+  |  |--192.168.121.233
+  |--@web:
+  |  |--192.168.121.194
+
+
+ Umatningen visar en hierarkisk översikt där alla hosts finns under gruppen “all”, och där mina två servrar är organiserade i grupperna “db” (192.168.121.233) och “web” (192.168.121.194).
+
+ Såhär kan man tolka grafen:
+
+ @all: — Detta är den översta, globala gruppen som innehåller alla hosts och grupper.
+
+Under @all: finns olika grupper:
+
+@ungrouped: — Hosts som inte tillhör någon specifik grupp (här är den tom).
+
+@db: — Gruppen för databasservern, som innehåller hosten 192.168.121.233.
+
+@web: — Gruppen för webbservern, som innehåller hosten 192.168.121.194.
 
 ## QUESTION C
 
@@ -131,6 +157,8 @@ Now run:
 Study the output of this command.
 
 What does the `ansible_connection=local` part mean?
+
+SVAR: ansible_connection=local betyder att Ansible kör uppgifter direkt på den lokala datorn (controller-maskinen) istället för att ansluta via SSH, som den gör med de andra Vagrant-maskinerna. Det innebär att värddatorn själv räknas som en host i Ansible och att kommandon körs direkt på den utan SSH.
 
 ## BONUS QUESTION
 
@@ -152,4 +180,6 @@ In your Ansible working directory where the `ansible.cfg' is, run
 
 You should get a pager displaying all available configuration values. How does it differ
 from when you run the same command in your usual home directory?
+
+SVAR: Jag använde kommandot ansible-config för att skapa en initial konfigurationsfil och jämförde sedan konfigurationen som visas när jag kör ansible-config dump i min Ansible-arbetskatalog med den som visas i min hemkatalog. Skillnaden var att i arbetskatalogen används min lokala ansible.cfg vilket gör att inställningarna skiljer sig från standardvärdena som används i hemkatalogen. 
 
