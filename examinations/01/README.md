@@ -50,4 +50,4 @@ Can you run a command on a remote host via SSH? How?
 
 ANSWER: 
 
-Du ansluter till fjärrdatorn via SSH genom att skriva ssh följt av användarnamn och adress, och sedan kommandot du vill köra inom citattecken direkt efter, vilket gör att kommandot körs på fjärrdatorn utan att du behöver logga in interaktivt.
+Du ansluter till fjärrdatorn via SSH genom att skriva ssh följt av användarnamn eller adress, och sedan kommandot du vill köra inom citattecken direkt efter, vilket gör att kommandot körs på fjärrdatorn utan att du behöver logga in interaktivt.

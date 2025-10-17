@@ -121,9 +121,17 @@ Run the exact same playbook again and study the output. What is the difference?
 
 What does the `ansible.builtin.debug` module actually do?
 
+SVAR: ansible.builtin.debug-modulen används för att skriva ut information under en playbooks körning. Den kan visa innehållet i variabler eller anpassade meddelanden, vilket är användbart för felsökning eller för att få feedback på vad som händer i playbooken.
+
+I uppgiften användes ansible.builtin.debug i playbooken som skrev ut värdet på variabeln ansible_facts.nodename, vilket visade hostnamnet på varje server. Detta exempel visar hur debug-modulen hjälper till att visa information direkt i Ansible-utmatningen.
+
 ## QUESTION B
 
 What is the variable 'ansible_facts' and where does it come from?
+
+SVAR: ansible_facts är en speciell variabel som Ansible automatiskt samlar in från varje host när en playbook körs. Den innehåller information (fakta) om systemet, till exempel operativsystem, nätverksinställningar, användare, maskinnamn (nodename), CPU, minne och mycket mer.
+
+Den här informationen samlas in i början av playbook-körningen genom en process som kallas “fact gathering”, som är aktiverad som standard i Ansible. Därför finns ansible_facts tillgänglig för användning i playbooks utan att du behöver göra något extra.
 
 ## QUESTION C
 
@@ -134,6 +142,8 @@ How do we now remove the software we installed through the playbook above? Make 
 playbook remove the exact same software we previously installed. Call the created
 playbook `03-uninstall-software.yml`.
 
+SVAR: Vi ändrar state från 'present' till 'absent' i Playbooken. 
+
 ## BONUS QUESTION
 
 What happens when you run `ansible-playbook` with different options?
@@ -142,6 +152,8 @@ Explain what each of these options do:
 * --verbose, -vv, -vvv, -vvvv
 * --check
 * --syntax-check
+
+SVAR: När du kör ansible-playbook med olika options påverkar det mängden information och funktionaliteten under körningen; flaggorna --verbose, -vv, -vvv och -vvvv ökar successivt detaljnivån på den information som visas om vad Ansible gör, från lite mer info till maximal debug-information, --check kör playbooken i "check mode" vilket simulerar ändringar utan att faktiskt göra dem för att visa vad som skulle förändras, och --syntax-check kontrollerar bara om playbookens syntax är korrekt utan att köra några uppgifter.
 
 ## Study Material & Documentation
 
