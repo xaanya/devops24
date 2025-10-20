@@ -72,9 +72,19 @@ Run the playbook with `ansible-playbook` and `--verbose` or `-v` as option:
 The output from the playbook run contains something that looks suspiciously like JSON, and that contains
 a number of keys and values that come from the output of the Ansible module.
 
+ANTECKNING: 
+Här skapades en playbook 05-web.yml som kopierar filen files/https.conf till /etc/nginx/conf.d/https.conf på servrarna i gruppen web.
+Playbooken använder ansible.builtin.copy modulen för att kopiera filen.
+Vi körde playbooken med ansible-playbook -v 05-web.yml för att se detaljerad output.
+
 What does the output look like the first time you run this playbook?
 
+
 What does the output look like the second time you run this playbook?
+
+
+SVAR: Första körningen av playbooken visar att filen /etc/nginx/conf.d/https.conf kopierades och ändrades på servern ("changed": true), vilket betyder att konfigurationen lades in.
+Andra körningen visar att filen redan var på plats och oförändrad, och därför skedde inga ändringar ("changed": false). Detta visar att playbooken är idempotent, vilket är en viktig egenskap i Ansible.
 
 # QUESTION B
 
@@ -114,12 +124,25 @@ Again, these addresses are just examples, make sure you use the IP of the actual
 Note also that `curl` needs the `--insecure` option to establish a connection to a HTTPS server with
 a self signed certificate.
 
+SVAR: För att starta om nginx-tjänsten via Ansible använde vi modulen ansible.builtin.service och la till state: restarted. Det gör att tjänsten startas om, vilket tvingar nginx att läsa in den nya konfigurationen.
+
+Efter att vi kopierat HTTPS-konfigurationsfilen till rätt plats fungerade inte HTTPS-tjänsten direkt eftersom nginx måste läsa om sin konfiguration för att aktivera ändringarna. För att göra detta måste nginx-tjänsten startas om. Genom att använda Ansible kan vi lägga till en extra uppgift i playbooken som säkerställer att nginx startas om efter att filen kopierats. När detta är gjort och playbooken körts kan vi verifiera att nginx nu svarar på både port 80 för HTTP och port 443 för HTTPS. För att testa detta använder man verktyget curl, där man även måste lägga till ett extra kommando för att acceptera ett självsignerat certifikat vid HTTPS. Efter detta bekräftades att HTTPS fungerar som det ska.
 # QUESTION C
 
 What is the disadvantage of having a task that _always_ makes sure a service is restarted, even if there is
 no configuration change?
 
+SVAR: Nackdelen med att alltid starta om en tjänst i en Ansible-uppgift, oavsett om det har skett någon konfigurationsändring eller inte, är att det kan leda till onödiga avbrott i tjänsten. Detta kan orsaka problem, särskilt i produktion, eftersom tjänsten kan vara otillgänglig under omstarten. Om omstarten sker samtidigt som andra processer eller uppgifter körs kan det även leda till krockar eller fel i systemet. Dessutom är det ineffektivt och kan slösa resurser att starta om tjänsten utan anledning.
+
+Därför är det bättre att bara starta om tjänsten när det faktiskt har skett en förändring i konfigurationen, vilket i Ansible ofta hanteras genom att använda notify och handlers.
+
 # BONUS QUESTION
 
 There are at least two _other_ modules, in addition to the `ansible.builtin.service` module that can restart
 a `systemd` service with Ansible. Which modules are they?
+
+SVAR: ansible.builtin.systemd
+Denna modul är mer specifikt riktad mot systemd och ger fler möjligheter för att hantera systemd-enheter, inklusive start, stopp, omstart, aktivering och inaktivering.
+
+ansible.builtin.command (eller ansible.builtin.shell)
+Fast det inte är en dedikerad service-modul kan man köra kommando som t.ex. systemctl restart nginx direkt via dessa moduler för att starta om en tjänst. Det är mindre elegant men funkar i de fall där man vill köra specifika kommandon.

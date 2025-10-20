@@ -1,0 +1,18 @@
+---
+- name: Configure HTTPS for webserver
+  hosts: web
+  become: true
+  tasks:
+    - name: Copy HTTPS configuration file to nginx
+      ansible.builtin.copy:
+        src: files/https.conf
+        dest: /etc/nginx/conf.d/https.conf
+        owner: root
+        group: root
+        mode: '0644'
+
+# name: är en beskrivning av uppgiften, så det är lätt att förstå vad som händer
+# ansible.builtin.copy är modulen som kopierar en fil från din kontrollmaskin till målmaskinen
+# src: är sökvägen till filen på din kontrollmaskin (lokalt där du kör playbooken)
+# dest: är sökvägen på målmaskinen där filen ska kopieras
+# owner, group och mode sätter ägarskap och rättigheter på filen på målmaskinen
