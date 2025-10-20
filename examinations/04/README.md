@@ -90,4 +90,4 @@ Consider the output from the tasks above, and what we were actually doing on the
 
 What is a good naming convention for tasks? (What SHOULD we write in the `name:` field`?)
 
-SVAR: Det är bra att ha namn som tydligt beskriver syftet och vad man vill uppnå. T.ex "Ensure nginx is uninstalled" Då slipper man missförstånd eller oklarheter. 
+SVAR: Det är viktigt att använda namn som tydligt beskriver vad varje task gör och vilket tillstånd man vill uppnå, till exempel “Ensure nginx is uninstalled”. På så sätt undviker man missförstånd och oklarheter när playbooken körs eller när andra läser den. Det gör också felsökning och underhåll enklare eftersom man snabbt förstår syftet med varje steg.
