@@ -53,12 +53,21 @@ module.
 
 How can we make the web server start with an addition of just one line to the playbook above?
 
+ANSWER: Jag lade till raden state: started längst ner i playbook-filen.
+Detta säkerställer att nginx inte bara aktiveras för att starta automatiskt vid systemstart, utan också startas direkt när playbooken körs.
+
+Det behövdes eftersom vi utan denna rad fick felmeddelandet "Connection refused" när vi försökte ansluta till webservern.
+Det berodde på att tjänsten då inte var igång, trots att den var installerad och satt att starta vid boot.
+Så utan state: started startas nginx först vid nästa omstart av systemet, men inte direkt. Och det var därför som curl inte fungerade till att börja med.
+
 # QUESTION B
 
 You make have noted that the `become: true` statement has moved from a specific task to the beginning
 of the playbook, and is on the same indentation level as `tasks:`.
 
 What does this accomplish?
+
+SVAR: Allt som ligger under tasks på samma indentering som become:true kommer att köras med root-rättigheter. På så vis slipper man skriva become:true om och om igen eftersom root-rättigheter behövs för de tasks som finns med i playbooken. 
 
 # QUESTION C
 
@@ -72,8 +81,13 @@ log in to the machine and make sure that there are no `nginx` processes running.
 
 Why did we change the order of the tasks in the `04-uninstall-webserver.yml` playbook?
 
+SVAR: Man behövde ändra ordningen på tasks eftersom nginx-tjänsten måste stoppas innan den avinstalleras.
+Om man tar bort paketet först kan tjänsten fortfarande vara igång, vilket kan orsaka fel eller lämna kvar processer.
+
 # BONUS QUESTION
 
 Consider the output from the tasks above, and what we were actually doing on the machine.
 
 What is a good naming convention for tasks? (What SHOULD we write in the `name:` field`?)
+
+SVAR: Det är bra att ha namn som tydligt beskriver syftet och vad man vill uppnå. T.ex "Ensure nginx is uninstalled" Då slipper man missförstånd eller oklarheter. 
