@@ -167,6 +167,12 @@ There are several ways to accomplish this, and there is no _best_ way to do this
 
 Is this a good way to handle these types of conditionals? What do you think?
 
+SVAR: a, att använda register tillsammans med when för att kontrollera om en task har gjort en ändring är ett helt giltigt och effektivt sätt att styra flödet i en Ansible-playbook. Det gör det möjligt att bara starta om tjänster som nginx när något faktiskt har förändrats, vilket sparar tid och minskar risken för onödiga omstarter. Metoden är dessutom pedagogisk och bra för att förstå hur Ansible hanterar resultat från moduler och hur man kan använda conditionals.
+
+Samtidigt finns det ett mer vanligt och rekommenderat sätt att hantera detta i större och mer komplexa projekt, nämligen att använda handlers och notify. Handlers körs automatiskt i slutet av playbook-körningen och utförs bara en gång, oavsett hur många gånger de anropas. Det gör att man undviker att starta om tjänster flera gånger i samma körning, vilket är mer effektivt och ger en tydligare och mer modulär playbook.
+
+Sammanfattningsvis är register och when ett bra sätt för enklare scenarion och när man lär sig Ansible, medan notify och handlers är att föredra i produktionsmiljöer och större playbooks för bättre hantering av tjänster och underhållbarhet.
+
 # BONUS QUESTION
 
 Imagine you had a playbook with hundreds of tasks to be done on several hosts, and each one of these tasks
@@ -177,3 +183,9 @@ would you like the flow to work?
 
 Describe in simple terms what your preferred task flow would look like, not necessarily implemented in
 Ansible, but in general terms.
+
+SVAR: Om jag hade en playbook med hundratals uppgifter på flera servrar, och många av dessa kan kräva att en tjänst startas om eller laddas om, skulle jag vilja optimera flödet så att tjänster bara startas om eller laddas om en gång i slutet av körningen, om det alls behövs.
+
+I enkla termer skulle jag vilja att varje task som ändrar något konfigurationsrelaterat istället ”flaggar” att en omstart eller omladdning behövs, men själva omstarten ska inte ske direkt efter varje task. Istället samlar man upp alla sådana flaggor under körningen och i slutet gör man en samlad, enkel omstart eller omladdning av tjänsten, bara om någon förändring faktiskt skett.
+
+Detta minimerar onödiga omstarter och minskar risken för driftstörningar och avbrott eftersom tjänsten inte behöver startas om flera gånger i rad under samma playbook-körning. Det gör också att hela processen blir mer effektiv och stabil.

@@ -1,0 +1,44 @@
+- name: Configure example.internal website on web servers
+  hosts: web
+  become: yes
+  tasks:
+    # Kopiera nginx-konfigurationen och spara resultatet i variabeln nginx_conf_result
+    - name: Ensure the nginx configuration is updated for example.internal
+      ansible.builtin.copy:
+        src: files/example.internal.conf
+        dest: /etc/nginx/conf.d/example.internal.conf
+      register: nginx_conf_result
+
+    # Visa innehållet i nginx_conf_result för felsökning och förståelse
+    - name: Print nginx_conf_result
+      ansible.builtin.debug:
+        var: nginx_conf_result
+
+    # Skapa katalogen för webbplatsens filer med rätt ägare och rättigheter
+    - name: Create directory structure for example.internal website
+      ansible.builtin.file:
+        path: /var/www/example.internal/html
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    # Kopiera index.html till webbplatsens katalog och spara resultatet i index_html_result
+    - name: Copy index.html to the right directory
+      ansible.builtin.copy:
+        src: files/index.html
+        dest: /var/www/example.internal/html/index.html
+      register: index_html_result
+
+    # Visa innehållet i index_html_result för felsökning och förståelse
+    - name: Print index_html_result
+      ansible.builtin.debug:
+        var: index_html_result
+
+    # Starta om nginx ENDAST om nginx-konfigurationsfilen eller index.html har ändrats
+    - name: Ensure that nginx restarts
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+        enabled: true
+      when: nginx_conf_result.changed or index_html_result.changed
