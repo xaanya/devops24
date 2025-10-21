@@ -28,6 +28,11 @@ is run.
 When you have run the playbook above successfully, how can you verify that the `mariadb`
 service is started and is running?
 
+SVAR: Jag gjorde såhär: sudo systemctl status mariadb
+
 # BONUS QUESTION
 
 How many different ways can use come up with to verify that the `mariadb` service is running?
+
+SVAR: För att kontrollera att MariaDB-tjänsten körs efter en playbook är det enklast att använda systemctl, men i en större miljö med många VM:ar är det bättre med automatiserade skript som exempelvis Ansible playbooks eller skript som använder verktyg som Nagios eller Prometheus för hälsokontroller och anslutningstester, eftersom dessa kan köras centralt och ger snabb, skalbar och konsekvent övervakning utan att behöva logga in på varje server manuellt.
+
