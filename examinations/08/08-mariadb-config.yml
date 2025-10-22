@@ -32,3 +32,12 @@
         state: present
         login_unix_socket: /var/lib/mysql/mysql.sock
         
+ # --------------------------------------------------------------
+  # Examination 8 – sammanfattning av vad som görs i denna playbook:
+  #
+  # - Uppdaterar nginx-konfigurationen med example.internal.conf
+  # - Skapar katalogstrukturen för webbplatsen /var/www/example.internal/html
+  # - Kopierar över en index.html-fil till rätt katalog
+  # - Startar om nginx-tjänsten och ser till att den är aktiv vid uppstart
+  #
+  # --------------------------------------------------------------
