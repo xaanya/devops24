@@ -1,0 +1,34 @@
+---
+- hosts: db
+  become: true
+  tasks:
+    - name: Ensure MariaDB-server is installed.
+      ansible.builtin.package:
+        name: mariadb-server
+        state: present
+
+    - name: Ensure Mariadb is started at boot
+      ansible.builtin.service:
+        name: mariadb
+        enabled: false
+        state: started
+
+    - name: Ensure python3-PyMySQL is installed
+      ansible.builtin.package:
+        name: python3-PyMySQL
+        state: present
+
+    - name: Create database 'webappdb'
+      community.mysql.mysql_db:
+        name: webappdb
+        state: present
+        login_unix_socket: /var/lib/mysql/mysql.sock #talar om för Ansible att logga in via UNIX-socket som root, utan lösenord.
+
+    - name: Create database user 'webappuser' with access to webappdb
+      community.mysql.mysql_user:
+        name: 'webappuser'
+        password: Linux4Ever
+        priv: 'webappdb.*:ALL'
+        state: present
+        login_unix_socket: /var/lib/mysql/mysql.sock
+        
