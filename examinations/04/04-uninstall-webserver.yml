@@ -1,15 +1,28 @@
 ---
 - name: Uninstall the webserver
   hosts: web
-  become: true
+  become: true  # Kör som root/sudo på målmaskinen för att ha rättigheter att stoppa tjänster och avinstallera paket
   tasks:
     - name: Ensure nginx is stopped and disabled
       ansible.builtin.service:
         name: nginx
-        state: stopped
-        enabled: false
+        state: stopped     # Stoppar nginx-tjänsten om den körs
+        enabled: false     # Ser till att nginx inte startar automatiskt vid systemstart
 
     - name: Ensure nginx is uninstalled
       ansible.builtin.package:
         name: nginx
-        state: absent
+        state: absent      # Avinstallerar nginx-paketet från systemet
+
+# --------------------------------------------------------------
+# Vad gör denna playbook?
+# - Stoppar nginx-tjänsten och hindrar den från att starta vid boot.
+# - Avinstallerar nginx-paketet från webbservern.
+#
+# Vilka moduler används och varför?
+# - ansible.builtin.service: Hanterar systemtjänster (start, stopp, aktivering vid boot, etc.).
+#   Här används den för att stoppa nginx och inaktivera automatisk start.
+# - ansible.builtin.package: Hanterar paketinstallation och borttagning.
+#   Här används den för att avinstallera nginx från systemet.
+#
+# --------------------------------------------------------------
