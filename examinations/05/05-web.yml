@@ -11,8 +11,24 @@
         group: root
         mode: '0644'
 
-# name: är en beskrivning av uppgiften, så det är lätt att förstå vad som händer
-# ansible.builtin.copy är modulen som kopierar en fil från din kontrollmaskin till målmaskinen
-# src: är sökvägen till filen på din kontrollmaskin (lokalt där du kör playbooken)
-# dest: är sökvägen på målmaskinen där filen ska kopieras
-# owner, group och mode sätter ägarskap och rättigheter på filen på målmaskinen
+# --------------------------------------------------------------
+# Vad gör denna playbook?
+# - Kopierar en HTTPS-konfigurationsfil till nginx på webbservern.
+# - Säkerställer att filen får rätt ägare och rättigheter för att nginx ska kunna använda den.
+#
+# Varför är detta relevant för uppgiften?
+# - HTTPS är den säkra versionen av HTTP och använder SSL/TLS (Secure Sockets Layer / Transport Layer Security) 
+#   för att kryptera trafiken mellan klient och server.
+# - Genom att kopiera rätt HTTPS-konfiguration ställer vi in nginx för att hantera krypterad trafik.
+# - Detta gör att webbservern kan erbjuda säkra anslutningar (https://) istället för osäkra (http://).
+#
+# Vilken modul används?
+# - ansible.builtin.copy: Används för att överföra filer från kontrollmaskinen till målmaskinen.
+#
+# Varför använda become: true?
+# - För att få tillräckliga rättigheter att skriva i /etc/nginx/, en skyddad systemkatalog.
+#
+# Sammanfattning:
+# - Playbooken sätter upp grundläggande HTTPS-stöd på webbservern.
+# - Detta är ett viktigt steg för att säkra webbtrafiken med SSL/TLS (Secure Sockets Layer / Transport Layer Security).
+# --------------------------------------------------------------
