@@ -167,7 +167,7 @@ There are several ways to accomplish this, and there is no _best_ way to do this
 
 Is this a good way to handle these types of conditionals? What do you think?
 
-SVAR: a, att använda register tillsammans med when för att kontrollera om en task har gjort en ändring är ett helt giltigt och effektivt sätt att styra flödet i en Ansible-playbook. Det gör det möjligt att bara starta om tjänster som nginx när något faktiskt har förändrats, vilket sparar tid och minskar risken för onödiga omstarter. Metoden är dessutom pedagogisk och bra för att förstå hur Ansible hanterar resultat från moduler och hur man kan använda conditionals.
+SVAR: att använda register tillsammans med when för att kontrollera om en task har gjort en ändring är ett helt giltigt och effektivt sätt att styra flödet i en Ansible-playbook. Det gör det möjligt att bara starta om tjänster som nginx när något faktiskt har förändrats, vilket sparar tid och minskar risken för onödiga omstarter. Metoden är dessutom pedagogisk och bra för att förstå hur Ansible hanterar resultat från moduler och hur man kan använda conditionals.
 
 Samtidigt finns det ett mer vanligt och rekommenderat sätt att hantera detta i större och mer komplexa projekt, nämligen att använda handlers och notify. Handlers körs automatiskt i slutet av playbook-körningen och utförs bara en gång, oavsett hur många gånger de anropas. Det gör att man undviker att starta om tjänster flera gånger i samma körning, vilket är mer effektivt och ger en tydligare och mer modulär playbook.
 

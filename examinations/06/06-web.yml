@@ -3,36 +3,63 @@
   hosts: web
   become: yes
   tasks:
-    - name: Ensure the nginx configuration is updated for example.internal
+    - name: Ensure the nginx configuration is updated for example.internal  # Kopierar webbplatsens nginx-konfigurationsfil
       ansible.builtin.copy:
         src: files/example.internal.conf
         dest: /etc/nginx/conf.d/example.internal.conf
+      register: nginx_conf_result  # Registrerar resultatet i variabel
 
-    - name: Create directory structure for example.internal website
+    - name: Create directory structure for example.internal website  # Skapar katalog för webbplatsens filer och sätter rätt ägare och rättigheter
       ansible.builtin.file:
         path: /var/www/example.internal/html
         state: directory
         owner: root
         group: root
         mode: '0644'
+      register: dir_result  # Registrerar resultatet i variabel
 
-    - name: Ensure that nginx restarts
+    - name: Upload index.html to example.internal website directory  # Kopierar index.html till webbplatsens katalog
+      ansible.builtin.copy:
+        src: files/index.html
+        dest: /var/www/example.internal/html/index.html
+      register: index_result  # Registrerar resultatet i variabel
+
+    - name: Restart nginx if configuration or content changed  # Startar om nginx ENDAST om någon av ovanstående tasks har gjort en ändring
       ansible.builtin.service:
         name: nginx
         state: restarted
         enabled: true
+      when: nginx_conf_result.changed or dir_result.changed or index_result.changed  # Kondition för omstart
 
-    - name: Ensure moving index.html to right directory
-      ansible.builtin.copy:
-        src: files/index.html
-        dest: /var/www/example.internal/html
-
- # --------------------------------------------------------------
-  # Examination 6 – sammanfattning av vad som görs i denna playbook:
-  #
-  # - Uppdaterar nginx-konfigurationen med example.internal.conf
-  # - Skapar katalogstrukturen för webbplatsen /var/www/example.internal/html
-  # - Kopierar över en index.html-fil till rätt katalog
-  # - Startar om nginx-tjänsten och ser till att den är aktiv vid uppstart
-  #
-  # --------------------------------------------------------------
+# --------------------------------------------------------------
+# Examination 6 – sammanfattning av vad som görs i denna playbook:
+#
+# Syfte:
+# - Konfigurera en nginx virtual host "example.internal" för att visa en anpassad webbsida.
+# - Ersätta standardwebbsidan med vår egen index.html.
+# - Skapa nödvändig katalogstruktur under /var/www/example.internal/html.
+# - Säkerställa att nginx startas om ENDAST om konfiguration eller innehåll ändrats.
+#
+# Viktiga moduler och deras användning:
+# - ansible.builtin.copy:
+#   Används för att kopiera konfigurationsfilen och index.html från kontrollmaskinen till målservern.
+#   Varje kopiering registreras i en variabel för att kunna kolla om en ändring skett.
+#
+# - ansible.builtin.file:
+#   Skapar katalogstrukturen för webbplatsen med korrekta ägare och rättigheter.
+#   Registrerar också om katalogen skapats eller ändrats.
+#
+# - ansible.builtin.service:
+#   Hanterar nginx-tjänsten.
+#   Om någon av ovanstående uppgifter har ändrat något körs denna task och nginx startas om.
+#   'enabled: true' säkerställer att nginx startar automatiskt vid systemstart.
+#
+# Varför använda register och when?
+# - 'register' sparar resultatet av en task (inklusive om något ändrats).
+# - 'when' låter oss köra nästa task (t.ex. omstart) ENDAST om en tidigare task har ändrat något.
+# - Detta gör att nginx inte startas om i onödan, sparar tid och minskar risken för driftstörningar.
+#
+# Sammanfattning:
+# - Playbooken gör en komplett, effektiv och "intelligent" konfiguration av nginx och webbplatsen.
+# - Den kombinerar filhantering och tjänstehantering med villkor för omstart baserat på verkliga ändringar.
+# --------------------------------------------------------------
