@@ -1,0 +1,43 @@
+---
+- name: Configure example.internal website on web servers
+  hosts: web
+  become: yes
+  tasks:
+    - name: Deploy nginx configuration from template for example.internal  # Använder template för att skapa nginx-konfiguration dynamiskt med korrekt IP
+      ansible.builtin.template:
+        src: templates/example.internal.conf.j2  # Jinja2-mallfil som ersätter statisk konfigurationsfil
+        dest: /etc/nginx/conf.d/example.internal.conf  # Placering på servern för nginx-konfiguration
+      register: nginx_conf_result  # Registrerar resultatet för att kunna kontrollera om filen ändrats
+
+    - name: Create directory structure for example.internal website  # Säkerställer att webbplatsens katalog finns med rätt rättigheter
+      ansible.builtin.file:
+        path: /var/www/example.internal/html
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'  # Läs- och körbehörighet för alla, skrivbehörighet för ägare
+      register: dir_result  # Registrerar om katalogen skapades eller ändrades
+
+    - name: Upload index.html to example.internal website directory  # Kopierar statisk index.html till webbplatsens katalog
+      ansible.builtin.copy:
+        src: files/index.html  # Lokal fil i Ansible-projektet
+        dest: /var/www/example.internal/html/index.html  # Destination på webbservern
+      register: index_result  # Registrerar ändringar
+
+    - name: Restart nginx if configuration or content changed  # Startar om nginx endast om någon av de ovanstående ändrat något
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+        enabled: true  # Säkerställer att nginx startar vid boot
+      when: nginx_conf_result.changed or dir_result.changed or index_result.changed  # Villkor för omstart
+
+# ---------------------------------------------------------------
+# Sammanfattning:
+# 
+# Den här playbooken konfigurerar webbservern för domänen example.internal.
+# Istället för att använda en statisk nginx-konfigurationsfil, används en Jinja2-template
+# som automatiskt sätter serverns externa IP-adress i konfigurationen.
+# Playbooken säkerställer även att katalogstrukturen och indexfilen finns på plats,
+# och startar om nginx endast om konfiguration eller innehåll ändrats.
+# Detta gör att webbservern blir mer flexibel och enkel att hantera på flera olika maskiner.
+# ---------------------------------------------------------------
