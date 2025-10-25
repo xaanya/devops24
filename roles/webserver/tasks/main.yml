@@ -42,6 +42,7 @@
   ansible.builtin.template:
     src: templates/example.internal.conf.j2
     dest: /etc/nginx/conf.d/example.internal.conf
+  notify: Reload nginx  
   register: nginx_conf_result
 
 - name: Copy HTTPS configuration file
@@ -51,11 +52,14 @@
     owner: root
     group: root
     mode: '0644'
+  notify: Reload nginx
+  
 
 - name: Copy index.html for example.internal website
   ansible.builtin.copy:
     src: files/index.html
     dest: /var/www/example.internal/html/index.html
+  notify: Reload nginx  
   register: index_result
 
 - name: Ensure /etc/pki/nginx directories exist for SSL
@@ -83,9 +87,4 @@
     privatekey_path: /etc/pki/nginx/private/server.key
     provider: selfsigned
 
-- name: Restart nginx if configuration or content changed
-  ansible.builtin.service:
-    name: nginx
-    state: restarted
-    enabled: true
-  when: nginx_conf_result.changed or index_result.changed
+
