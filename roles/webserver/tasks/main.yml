@@ -1,0 +1,91 @@
+---
+# ----------------------------------------------------------------
+# Tasks för rollen webserver
+# Denna fil innehåller alla uppgifter som tidigare fanns i
+# webserver-playbooks (installera nginx, användare, kataloger, webbplats,
+# HTTPS-konfiguration, self-signed certifikat, start av tjänster).
+# ----------------------------------------------------------------
+
+- name: Install nginx
+  ansible.builtin.package:
+    name: nginx
+    state: present
+
+- name: Ensure nginx service is enabled and started
+  ansible.builtin.service:
+    name: nginx
+    enabled: true
+    state: started
+
+- name: Create users with their respective groups
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    groups: "{{ item.groups }}"
+    password: "{{ item.password }}"
+    state: present
+    comment: "{{ item.gecos | default('') }}"
+  loop:
+    - { name: "alovelace", groups: "wheel,audio,video", password: "<hash>", gecos: "Ada Lovelace" }
+    - { name: "aturing",   groups: "tape",           password: "<hash>", gecos: "Alan Turing" }
+    - { name: "edijkstra", groups: "tcpdump",       password: "<hash>", gecos: "Edsger Dijkstra" }
+    - { name: "ghopper",   groups: "wheel,audio",   password: "<hash>", gecos: "Grace Hopper" }
+
+- name: Ensure /var/www/example.internal/html directory exists
+  ansible.builtin.file:
+    path: /var/www/example.internal/html
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy nginx configuration for example.internal from template
+  ansible.builtin.template:
+    src: templates/example.internal.conf.j2
+    dest: /etc/nginx/conf.d/example.internal.conf
+  register: nginx_conf_result
+
+- name: Copy HTTPS configuration file
+  ansible.builtin.copy:
+    src: files/https.conf
+    dest: /etc/nginx/conf.d/https.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy index.html for example.internal website
+  ansible.builtin.copy:
+    src: files/index.html
+    dest: /var/www/example.internal/html/index.html
+  register: index_result
+
+- name: Ensure /etc/pki/nginx directories exist for SSL
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    mode: "{{ '0700' if 'private' in item else '0755' }}"
+  loop:
+    - /etc/pki/nginx
+    - /etc/pki/nginx/private
+
+- name: Ensure python3-cryptography is installed
+  ansible.builtin.package:
+    name: python3-cryptography
+    state: present
+
+- name: Ensure private key exists
+  community.crypto.openssl_privatekey:
+    path: /etc/pki/nginx/private/server.key
+
+- name: Create self-signed certificate
+  community.crypto.x509_certificate:
+    path: /etc/pki/nginx/server.crt
+    privatekey_path: /etc/pki/nginx/private/server.key
+    provider: selfsigned
+
+- name: Restart nginx if configuration or content changed
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+    enabled: true
+  when: nginx_conf_result.changed or index_result.changed
