@@ -1,0 +1,79 @@
+---
+- name: Install and configure Node Exporter
+  hosts: all
+  become: true   # Vi behöver root-behörighet för att skapa systemanvändare, flytta filer och hantera systemd
+
+  tasks:
+    - name: Create node_exporter user
+      ansible.builtin.user:
+        name: node_exporter           # Namn på användaren som Node Exporter körs som
+        shell: /sbin/nologin          # Ingen inloggning tillåten (säkerhet)
+        system: yes                   # Skapar en systemanvändare
+      # Denna task säkerställer att Node Exporter har rätt behörighet och körs som en säker systemanvändare
+
+    - name: Download Node Exporter tarball
+      ansible.builtin.get_url:
+        url: "https://github.com/prometheus/node_exporter/releases/download/v1.9.0/node_exporter-1.9.0.linux-amd64.tar.gz"
+        dest: /tmp/node_exporter.tar.gz
+        mode: '0644'
+      # Laddar ner Node Exporter från officiella GitHub-releasen
+      # Versionen 1.9.0 används här som exempel, kontrollera senaste version om önskat
+
+    - name: Extract Node Exporter
+      ansible.builtin.unarchive:
+        src: /tmp/node_exporter.tar.gz
+        dest: /tmp/
+        remote_src: yes
+        creates: /tmp/node_exporter-1.9.0.linux-amd64/node_exporter
+      # Packar upp tarballen i /tmp/ så vi kan flytta binären senare
+      # 'creates' gör att tasken inte körs igen om filen redan finns
+
+    - name: Move node_exporter binary to /usr/local/bin
+      ansible.builtin.copy:
+        src: /tmp/node_exporter-1.9.0.linux-amd64/node_exporter
+        dest: /usr/local/bin/node_exporter
+        remote_src: yes
+        mode: '0755'
+      # Flyttar Node Exporter binären till /usr/local/bin så den ligger i PATH
+      # Sätter körbarhet till 0755
+
+    - name: Copy systemd unit file for Node Exporter
+      ansible.builtin.copy:
+        src: files/node_exporter.service    # Unit-filen som vi skapat i files/
+        dest: /etc/systemd/system/node_exporter.service
+        mode: '0644'
+      # Kopierar systemd-fil till rätt plats
+
+    - name: Reload systemd daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes
+      # Systemd måste läsa om nya tjänster innan vi kan starta Node Exporter
+
+    - name: Enable and start Node Exporter service
+      ansible.builtin.systemd:
+        name: node_exporter
+        state: started
+        enabled: yes
+      # Startar Node Exporter direkt och säkerställer att tjänsten startar vid boot
+
+    - name: Open Node Exporter port in firewall
+      ansible.posix.firewalld:
+        port: 9100/tcp
+        permanent: true
+        state: enabled
+        immediate: yes
+
+
+# ----------------------------------------------------------
+# Sammanfattning:
+#
+# Denna playbook installerar och konfigurerar Node Exporter på alla servrar i inventariet.
+# Den gör följande steg:
+# 1. Skapar en säker systemanvändare 'node_exporter'.
+# 2. Laddar ner och packar upp Node Exporter från officiella GitHub-releasen.
+# 3. Flyttar binären till /usr/local/bin och gör den körbar.
+# 4. Kopierar systemd unit-filen till /etc/systemd/system/.
+# 5. Laddar om systemd, startar och aktiverar tjänsten vid boot.
+# 6. Öppnar brandväggen för Node Exporter-porten via firewalld.
+#
+# Alla steg är kommenterade för tydlighet och säkerställer att playbooken kan köras smidigt utan manuella steg.

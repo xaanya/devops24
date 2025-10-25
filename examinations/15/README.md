@@ -47,6 +47,28 @@ and
 
 will get you on the right track, for instance if you've changed any of the Prometheus configuration.
 
+GJORT:
+
+# QUESTION A - Node Exporter installation
+
+Vi skapade Ansible-playbooken `15-node_exporter.yml` som installerar och konfigurerar Node Exporter på alla servrar i inventariet. 
+
+Playbooken gör följande:
+
+1. Skapar systemanvändaren `node_exporter`.
+2. Laddar ner och packar upp Node Exporter från officiella GitHub-releasen.
+3. Flyttar binären till `/usr/local/bin` med rätt behörigheter.
+4. Kopierar systemd unit-filen till `/etc/systemd/system/`.
+5. Startar och aktiverar Node Exporter-tjänsten via systemd.
+6. Öppnar brandväggen för port 9100 (Node Exporter).
+
+Efter körning kan Prometheus ansluta till Node Exporter på port 9100, och `curl http://<host>:9100/metrics` visar exportade systemmetrics.  
+
+Kontroll: Prometheus `Targets` visar alla servrar som `up`.
+
+
+
+
 # Resources and Information
 
 * https://github.com/prometheus/node_exporter/tree/master/examples/systemd

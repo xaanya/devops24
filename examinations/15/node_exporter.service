@@ -1,0 +1,23 @@
+# Beskrivning av tjänsten
+[Unit]
+Description=Node Exporter
+# Tjänsten ska starta efter att nätverket är online
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+# Kör Node Exporter som systemanvändaren node_exporter
+User=node_exporter
+# Samma grupp som användaren
+Group=node_exporter
+# Enkel tjänst som startar en process direkt
+Type=simple
+# Full path till Node Exporter binären
+ExecStart=/usr/local/bin/node_exporter
+# Starta om tjänsten automatiskt om den kraschar
+Restart=always
+
+[Install]
+# Starta tjänsten vid boot
+WantedBy=multi-user.target
+
