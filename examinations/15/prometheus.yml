@@ -46,3 +46,20 @@
         image: quay.io/prometheus/node-exporter:latest
         pod: prometheus
       # Startar Node Exporter i samma pod som Prometheus för lokala tester
+
+
+# ------------------------------------------------------------------------------
+# SAMMANFATTNING:
+# Denna playbook konfigurerar och startar Prometheus lokalt med hjälp av Podman.
+# Den skapar en konfigurationsfil (prometheus.yml) som definierar två "scrape jobs":
+#   1. Ett för Prometheus själv (localhost:9090)
+#   2. Ett för externa Node Exporters (192.168.121.194 och 192.168.121.233)
+# 
+# Playbooken använder:
+# - ansible.builtin.copy för att skapa konfigurationsfilen på kontrollmaskinen.
+# - containers.podman.podman_container för att starta både Prometheus och Node Exporter
+#   i containerform. Prometheus körs med en volym för persistens och lyssnar på port 9090.
+#
+# Syftet är att möjliggöra insamling och visualisering av systemstatistik (metrics)
+# från Node Exporter på olika servrar, via Prometheus gränssnitt.
+# ------------------------------------------------------------------------------
