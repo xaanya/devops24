@@ -73,3 +73,29 @@ Kontroll: Prometheus `Targets` visar alla servrar som `up`.
 
 * https://github.com/prometheus/node_exporter/tree/master/examples/systemd
 * https://prometheus.io/docs/guides/node-exporter/
+
+## SAMMANFATTNING AV VAD JAG GJORT DENNA UPPGIFT: 
+
+
+I denna uppgift konfigurerades **Prometheus** *(ett övervakningssystem och tidsseriedatabas som samlar in och lagrar metrics från olika system)* och **Node Exporter** *(ett verktyg som exponerar maskin- och systemstatistik till Prometheus)*.
+
+Arbetet delades upp i två delar:
+
+1. **Prometheus på kontrollmaskinen:**
+   En container med Prometheus startades via en Ansible-playbook (`prometheus.yml`) med hjälp av **Podman**.
+   Konfigurationsfilen `/tmp/scrape-config.yml` skapades automatiskt med de noder som skulle övervakas.
+   Prometheus container sattes upp att lyssna på port **9090** och samla in data från både sig själv och de två Node Exporter-instanserna.
+
+2. **Node Exporter på VMs (web och db):**
+   En separat Ansible-playbook (`15-node_exporter.yml`) installerade Node Exporter som en **systemd-tjänst** på båda virtuella maskinerna.
+   Den skapade en systemanvändare `node_exporter`, laddade ner binären från GitHub, placerade den i `/usr/local/bin`, och öppnade port **9100/tcp** i `firewalld`.
+   Tjänsten sattes till att starta automatiskt vid uppstart.
+
+Efter konfiguration verifierades installationen genom att:
+
+* Kontrollera att Node Exporter körde via `systemctl status node_exporter`
+* Testa endpoints med `curl http://localhost:9100/metrics`
+* Bekräfta i Prometheus webgränssnitt att alla **targets** (`localhost:9090`, `192.168.121.194:9100`, `192.168.121.233:9100`) hade status **UP**
+
+Resultatet är ett fungerande system där **Prometheus automatiskt samlar in och visualiserar systemdata (CPU, minne, disk, nätverk)** från både kontrollmaskinen och de två virtuella maskinerna med Node Exporter.
+
