@@ -1,0 +1,8 @@
+---
+- name: CIS Security Compliance Check för AlmaLinux 10
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - compliance_check

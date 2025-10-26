@@ -1,0 +1,128 @@
+---
+#FLAGG
+# tasks file for compliance_check
+# Alla kontroller är read-only och säkra
+
+# =====================================
+# Steg 0: Hämta paketfakta
+# =====================================
+- name: Hämta paketfakta från systemet
+  ansible.builtin.package_facts:
+
+# =====================================
+# Kontroll 1: Telnet-server ska inte vara installerad
+# =====================================
+- name: Kontrollera att telnet-server inte är installerad
+  ansible.builtin.assert:
+    that:
+      - "'telnet-server' not in ansible_facts.packages"
+    success_msg: "Telnet-server är inte installerad."
+    fail_msg: "Telnet-server är installerad."
+
+# =====================================
+# Kontroll 2: FTP-server (vsftpd) ska inte vara installerad
+# =====================================
+- name: Kontrollera att vsftpd inte är installerad
+  ansible.builtin.assert:
+    that:
+      - "'vsftpd' not in ansible_facts.packages"
+    success_msg: "FTP-server (vsftpd) är inte installerad."
+    fail_msg: "FTP-server (vsftpd) är installerad."
+
+# =====================================
+# Kontroll 3: RSH-server ska inte vara installerad
+# =====================================
+- name: Kontrollera att rsh-server inte är installerad
+  ansible.builtin.assert:
+    that:
+      - "'rsh-server' not in ansible_facts.packages"
+    success_msg: "RSH-server är inte installerad."
+    fail_msg: "RSH-server är installerad."
+
+# =====================================
+# Kontroll 4: NIS ska inte vara installerat
+# =====================================
+- name: Kontrollera att nis inte är installerad
+  ansible.builtin.assert:
+    that:
+      - "'nis' not in ansible_facts.packages"
+    success_msg: "NIS är inte installerat."
+    fail_msg: "NIS är installerat."
+
+# =====================================
+# Kontroll 5: YP-bind ska inte vara installerat
+# =====================================
+- name: Kontrollera att ypbind inte är installerat
+  ansible.builtin.assert:
+    that:
+      - "'ypbind' not in ansible_facts.packages"
+    success_msg: "ypbind är inte installerat."
+    fail_msg: "ypbind är installerat."
+
+# =====================================
+# Kontroll 6: Chrony (NTP) ska vara installerat
+# =====================================
+- name: Kontrollera att chrony är installerat
+  ansible.builtin.assert:
+    that:
+      - "'chrony' in ansible_facts.packages"
+    success_msg: "Chrony (NTP) är installerat."
+    fail_msg: "Chrony (NTP) är inte installerat."
+
+# =====================================
+# Kontroll 7: Firewalld ska vara igång
+# =====================================
+- name: Hämta servicefakta
+  ansible.builtin.service_facts:
+
+- name: Kontrollera att firewalld är igång
+  ansible.builtin.assert:
+    that:
+      - "'firewalld.service' in ansible_facts.services"
+      - "ansible_facts.services['firewalld.service'].state == 'running'"
+    success_msg: "Firewalld är igång."
+    fail_msg: "Firewalld är inte igång."
+
+# =====================================
+# Kontroll 8: Auditd ska vara aktivt
+# =====================================
+- name: Kontrollera att auditd är igång
+  ansible.builtin.assert:
+    that:
+      - "'auditd.service' in ansible_facts.services"
+      - "ansible_facts.services['auditd.service'].state == 'running'"
+    success_msg: "Auditd är igång."
+    fail_msg: "Auditd är inte igång."
+
+# =====================================
+# Kontroll 9: SELinux ska vara i enforcing-läge
+# =====================================
+- name: Kontrollera SELinux-status
+  ansible.builtin.command:
+    cmd: getenforce
+  register: selinux_status
+  changed_when: false
+
+- name: Säkerställ att SELinux är på (enforcing)
+  ansible.builtin.assert:
+    that:
+      - "selinux_status.stdout == 'Enforcing'"
+    success_msg: "SELinux är i enforcing-läge."
+    fail_msg: "SELinux är inte i enforcing-läge."
+
+# =====================================
+# Kontroll 10: Inga world-writable root-filer
+# =====================================
+- name: Kontrollera world-writable root-filer
+  ansible.builtin.shell: "find / -xdev -type f -perm -0002"
+  register: world_writable_files
+  changed_when: false
+  ignore_errors: yes
+
+
+- name: Assert inga world-writable root-filer
+  ansible.builtin.assert:
+    that:
+      - "world_writable_files.stdout_lines | length == 0"
+    success_msg: "Inga world-writable root-filer."
+    fail_msg: "Det finns world-writable root-filer!"
