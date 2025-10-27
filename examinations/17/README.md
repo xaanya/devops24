@@ -36,3 +36,5 @@ provided instead.
 To be able to use the password when running the playbooks later, you must use the `--ask-become-pass`
 option to `ansible` and `ansible-playbook` to provide the password. You can also place the password
 in a file, like with `ansible-vault`, or have it encrypted via `ansible-vault`.
+
+$6$VcLCBJ7gqiMmUD1.$Wwyl/JVlVNK3MOg1ev/z7Vcv1h9KXra5gDwKCAqXNka2oPHpGfX0MuRxF3.jd0uoYwjXvZYlyLMSrzDqu/kfX/
