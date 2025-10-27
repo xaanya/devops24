@@ -83,3 +83,13 @@ you most often use in Ansible?
 
 What modules/filters are there in Ansible that can safely test for "truthy/falsy" values, and return something
 more stringent?
+
+SVAR: 
+
+I Python finns de riktiga booleska värdena True och False. Men språket använder också så kallade “truthy” och “falsy” värden. Det betyder att vissa värden automatiskt tolkas som sanna eller falska i villkor. Till exempel är 0, "" (tom sträng), [] (tom lista), {} (tom ordbok) och None alltid falska, medan nästan allt annat tolkas som sant.
+
+Ansible bygger på Python, så samma princip gäller där. Men eftersom Ansible också använder YAML och Jinja2 kan vissa värden som "no", "off" eller "false" (som strängar) ibland ge oväntade resultat i villkor.
+
+För att vara säker kan man använda filtret bool i Ansible. Om man skriver {{ variabel | bool }} konverteras värdet alltid till ett strikt True eller False. Det gör att villkor som when blir mer pålitliga och konsekventa.
+
+Sammanfattningsvis: Python och Ansible tolkar vissa värden som “sanna” eller “falska” automatiskt, men i Ansible är det bäst att använda bool-filtret för att få ett tydligt och förutsägbart resultat.
