@@ -1,0 +1,20 @@
+---
+- name: CIS Security Compliance Check för AlmaLinux 10
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - compliance_check
+
+# =======================================================
+# CIS Security Compliance Check - Sammanfattning
+# =======================================================
+# Denna playbook kör rollen 'compliance_check' på alla hosts.
+# Rollen 'compliance_check' genomför 10 CIS-säkerhetskontroller:
+#   - Kontrollerar att onödiga tjänster inte är installerade: telnet, FTP (vsftpd), RSH, NIS, ypbind
+#   - Kontrollerar att nödvändiga tjänster är aktiva: chrony, firewalld, auditd
+#   - Kontrollerar att SELinux är i enforcing-läge
+#   - Kontrollerar att inga world-writable root-filer finns
+# Playbooken ändrar ingenting; den gör endast kontroller och rapporterar status.
+# Alla uppgifter är läsbara och säkra att köra på AlmaLinux 10 VMs.

@@ -1,0 +1,61 @@
+---
+- hosts: db
+  become: true  # Körs som root med sudo för att kunna installera paket och hantera tjänster
+  tasks:
+
+    - name: Ensure MariaDB-server is installed.
+      ansible.builtin.package:
+        name: mariadb-server
+        state: present  # Ser till att mariadb-server är installerat (installerar om det saknas)
+
+    - name: Ensure Mariadb is started at boot
+      ansible.builtin.service:
+        name: mariadb
+        enabled: false  # Tjänsten ska inte startas automatiskt vid reboot (enligt uppgiftens setup)
+        state: started  # Startar mariadb-tjänsten om den inte redan körs
+
+    - name: Ensure python3-PyMySQL is installed
+      ansible.builtin.package:
+        name: python3-PyMySQL
+        state: present  # Krävs för att Ansible ska kunna kommunicera med MariaDB via community.mysql
+
+    - name: Create database 'webappdb'
+      community.mysql.mysql_db:
+        name: webappdb
+        state: present  # Skapar databasen om den inte finns
+        login_unix_socket: /var/lib/mysql/mysql.sock  # Loggar in som root via socket, eftersom ingen root-lösenord är satt
+
+    - name: Create database user 'webappuser' with access to webappdb
+      community.mysql.mysql_user:
+        name: 'webappuser'  
+        password: Linux4Ever 
+        priv: 'webappdb.*:ALL'  # Ger ALLA rättigheter på hela databasen webappdb
+        host: '%'  # Tillåter inloggning från vilken host/IP som helst
+        state: present  # Skapar användaren om den inte redan finns
+        login_unix_socket: /var/lib/mysql/mysql.sock  # Loggar in via UNIX-socket som root
+
+
+  # --------------------------------------------------------------
+  # Examination 8 – sammanfattning av vad som görs i playbooken:
+  #
+  # Denna playbook installerar och konfigurerar MariaDB på db-servern, samt skapar
+  # en databas och användare med rätt behörigheter för applikationen.
+  #
+  # Använda moduler och deras syften:
+  #
+  # - ansible.builtin.package:
+  #     Installerar nödvändiga paket (mariadb-server och python3-PyMySQL).
+  #
+  # - ansible.builtin.service:
+  #     Ser till att MariaDB-tjänsten är igång och startar automatiskt vid boot.
+  #
+  # - community.mysql.mysql_db:
+  #     Skapar databasen 'webappdb' om den inte finns.
+  #
+  # - community.mysql.mysql_user:
+  #     Skapar databasanvändaren 'webappuser' med lösenord och ger fulla rättigheter på databasen.
+  #
+  # Autentisering sker via UNIX-socket (/var/lib/mysql/mysql.sock), vilket möjliggör
+  # root-inloggning utan lösenord då MariaDB inte är säkrad med root-lösenord i denna setup.
+  #
+  # --------------------------------------------------------------

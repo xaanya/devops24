@@ -1,0 +1,30 @@
+---
+- name: Create user accounts for webserver users
+  hosts: web
+  become: true 
+  tasks:
+    - name: Create users with their respective groups and GECOS field  # Skapar flera användare via en loop och lägger till deras riktiga namn
+      ansible.builtin.user:
+        name: "{{ item.name }}"       # Användarnamnet hämtas från loopen
+        groups: "{{ item.groups }}"   # Grupperna hämtas från loopen
+        password: "{{ item.password }}"   # Här anger vi hashat lösenord
+        comment: "{{ item.fullname }}"    # GECOS-fältet (riktigt namn) läggs till som bonus
+        state: present                # Ser till att användaren existerar (idempotent)
+      loop:
+        - { name: "alovelace", groups: "wheel,audio,video", password: "$6$LK0I7edhA127vT5L$Y0/4EVbe2Adzs4QDL6iOftsAlJsodIhnTKyC8Ioo/asKV22ciWXYuNKl8pkG4KnPK2ilrrt.MXU1eInyOAb8y.", fullname: "Ada Lovelace" }
+        - { name: "aturing",   groups: "tape",           password: "$6$Oz93MJo1zBmnBipn$baNKzGY37I9yqWHBHvvrn/9nBp57fXtQ5rPl4QwaFXuDpFKtLMYkeTyojR.9exirDrxSB5wItonqJI0AyZZvh.", fullname: "Alan Turing" }
+        - { name: "edijkstra", groups: "tcpdump",       password: "$6$angl8PzjbPSsBc9y$26iguGJEFoTMaAtSOcGQ1P.IkZVLJsvROdzbArbN6qVzfoR7sZyK1w/u7zmntqYqoq12jZyrgsl11bXi5dBRg0", fullname: "Edsger Dijkstra" }
+        - { name: "ghopper",   groups: "wheel,audio",   password: "$6$0E3CA00KZBSJQMct$aFxCXOl7J0afKVh0XzkCY2iINOGZEB6s4Qf2i4GX27gaLepMP.ubOsViUsYS4ngQ7IaJVQhpS6hn2hVvgBRrM/", fullname: "Grace Hopper" }
+
+# --------------------------------------------------------------
+#  Sammanfattning:
+# Denna playbook automatiserar skapandet av fyra användarkonton
+# på webservern med deras specifika gruppmedlemskap.
+# Varje användare får även ett hashat lösenord (ej plaintext) för säker inloggning.
+# Genom att lägga till 'comment: "{{ item.fullname }}"' fyller vi GECOS-fältet med
+# användarens riktiga namn, vilket var BONUS-delen av uppgiften.
+# Playbooken använder 'ansible.builtin.user'-modulen tillsammans med en loop,
+# vilket gör den enkel att underhålla och utöka.
+# Genom att använda loops istället för flera enskilda tasks
+# uppnås både idempotens (inga dubbla användare skapas) och tydlig struktur.
+# --------------------------------------------------------------

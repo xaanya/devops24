@@ -1,0 +1,43 @@
+---
+# --------------------------------------------------------------
+# Tasks för rollen dbserver
+# Denna fil innehåller alla uppgifter som tidigare fanns i
+# playbooks för DB-servern, inklusive installation, start av
+# MariaDB, skapande av databas och användare.
+# --------------------------------------------------------------
+
+- name: Ensure MariaDB-server is installed
+  ansible.builtin.package:
+    name: mariadb-server
+    state: present  # Installerar paketet om det saknas
+
+- name: Ensure python3-PyMySQL is installed
+  ansible.builtin.package:
+    name: python3-PyMySQL
+    state: present  # Krävs för att Ansible ska kunna kommunicera med MariaDB
+
+- name: Ensure MariaDB is started at boot
+  ansible.builtin.service:
+    name: mariadb
+    enabled: false   # Tjänsten ska inte starta automatiskt vid reboot
+    state: started   # Startar MariaDB om den inte redan körs
+
+- name: Create database 'webappdb'
+  community.mysql.mysql_db:
+    name: webappdb
+    state: present
+    login_unix_socket: /var/lib/mysql/mysql.sock  # Loggar in som root via UNIX-socket
+
+- name: Create database user 'webappuser' with access to webappdb
+  community.mysql.mysql_user:
+    name: 'webappuser'
+    password: "{{ db_password }}"  # Hämtas från Vault-variabel
+    priv: 'webappdb.*:ALL'         # Ger fulla rättigheter på webappdb
+    host: '%'                       # Tillåter inloggning från alla hosts
+    state: present
+    login_unix_socket: /var/lib/mysql/mysql.sock
+
+- name: Install common software on DB server
+  ansible.builtin.package:
+    name: vim,bash-completion,qemu-guest-agent
+    state: present

@@ -1,0 +1,20 @@
+---
+- name: Ensure all .md files are copied to dbserver
+  hosts: db
+  become: true
+  tasks: 
+
+    - name: Copy all .md files to deploy user's home directory
+      ansible.builtin.copy:                  # Copy-modulen används för att kopiera filer från kontrollmaskinen till target (db)
+        src: "{{ item }}"                    # Varje fil som hittas av with_fileglob blir 'item'
+        dest: /home/deploy/                  # Destinationen på db-servern
+        owner: deploy                        
+        group: deploy                        
+        mode: '0644'                          
+      with_fileglob:                          # Loopar över alla filer som matchar mönstret
+        - files/*.md                           # Alla md-filer i den lokala files/ katalogen
+
+# Sammanfattning:
+# Denna playbook kopierar alla .md-filer från din lokala files/ katalog till deploy-användarens hemkatalog på db-servern.
+# Vi använder ansible.builtin.copy-modulen för filöverföring och with_fileglob för att iterera över flera filer.
+# Playbooken är idempotent , om filerna redan finns med samma innehåll och rättigheter gör den inga ändringar.

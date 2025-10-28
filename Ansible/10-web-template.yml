@@ -1,0 +1,33 @@
+---
+- name: Configure example.internal website on web servers
+  hosts: web
+  become: yes
+  tasks:
+    - name: Deploy nginx configuration from template for example.internal  # Använder template istället för copy
+      ansible.builtin.template:
+        src: templates/example.internal.conf.j2  # Hämtar Jinja2-mallfil
+        dest: /etc/nginx/conf.d/example.internal.conf  # Placerar filen på servern
+      register: nginx_conf_result  # Registrerar resultatet
+
+    - name: Create directory structure for example.internal website  # Skapar katalog för webbplatsens filer
+      ansible.builtin.file:
+        path: /var/www/example.internal/html
+        state: directory
+        owner: root
+        group: root
+        mode: '0644'
+      register: dir_result
+
+    - name: Upload index.html to example.internal website directory  # Kopierar index.html till webbplatsens katalog
+      ansible.builtin.copy:
+        src: files/index.html
+        dest: /var/www/example.internal/html/index.html
+      register: index_result 
+
+    - name: Restart nginx if configuration or content changed  # Startar om nginx ENDAST om någon av ovanstående tasks har gjort en ändring
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+        enabled: true
+      when: nginx_conf_result.changed or dir_result.changed or index_result.changed
+ #blabla

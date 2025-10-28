@@ -1,0 +1,65 @@
+---
+- name: Configure firewalls on all servers
+  hosts: all
+  become: true   # Vi behöver root-behörighet för att installera paket och ändra firewall
+
+  tasks:
+  - name: Ensure firewalld and python3-firewall are installed
+    ansible.builtin.package:
+      name:
+        - firewalld        # Firewalld själv
+        - python3-firewall # Python-bibliotek för att Ansible ska kunna hantera firewalld
+      state: present     # Se till att de är installerade
+
+  - name: Ensure firewalld service is enabled and running
+    ansible.builtin.service:
+      name: firewalld
+      state: started     # Starta tjänsten direkt
+      enabled: true     # Se till att den startar automatiskt vid boot
+  
+  
+- name: Open http and https on webservers
+  hosts: web
+  become: true   # Vi behöver root-behörighet för att installera paket och ändra firewall
+
+  tasks:
+  - name: Open http and https on webservers
+    ansible.posix.firewalld:
+      service: "{{ item }}"
+      permanent: true    # Regler kvarstår efter reboot
+      state: enabled     # Aktivera tjänsterna
+      immediate: yes     # Applicera regler direkt
+    loop:
+      - http
+      - https
+    
+- name: Open mysql on dbservers
+  hosts: db
+  become: true   # Vi behöver root-behörighet för att installera paket och ändra firewall
+
+  tasks:
+  - name: Open mysql on dbservers
+    ansible.posix.firewalld:
+      service: mysql
+      permanent: true    # Regler kvarstår efter reboot
+      state: enabled
+      immediate: yes
+    
+
+# ----------------------------------------------------------
+# Sammanfattning :
+#
+# Denna playbook konfigurerar brandväggar på alla servrar i inventariet.
+# Syftet är att säkra servrarna genom att endast tillåta de tjänster som behövs:
+# - Webserver: http och https
+# - Databasserver: mysql
+#
+# Moduler som används:
+# - ansible.builtin.package : installerar firewalld och python3-firewall
+# - ansible.builtin.service : ser till att firewalld-tjänsten är startad och aktiverad
+# - ansible.posix.firewalld : öppnar de specifika tjänsterna i firewalld
+#
+# Viktigt:
+# - 'permanent: true' säkerställer att reglerna består efter reboot
+# - 'immediate: yes' applicerar reglerna direkt utan reload
+# - 'when' används för att selektivt köra tasks på rätt grupp av servrar

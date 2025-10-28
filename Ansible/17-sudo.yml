@@ -1,0 +1,26 @@
+---
+  - name: Set passwod for deploy user
+    hosts: all
+    become: true
+
+    tasks:
+      - name: Ensure deploy user has a password set 
+        ansible.builtin.user:
+          name: deploy
+          # SHA512-hash för lösenord 'hunter12'
+          password: "$6$VcLCBJ7gqiMmUD1.$Wwyl/JVlVNK3MOg1ev/z7Vcv1h9KXra5gDwKCAqXNka2oPHpGfX0MuRxF3.jd0uoYwjXvZYlyLMSrzDqu/kfX/"
+      
+      - name: Ensure deploy sudo requires password
+        ansible.builtin.lineinfile:
+          path: /etc/sudoers.d/deploy
+          regexp: '^deploy'
+          line: 'deploy ALL=(ALL) ALL'
+          validate: 'visudo -cf %s'
+           # Tar bort passwordless sudo, men behåller full sudo-behörighet med lösenord
+
+  # Sammanfattning:
+  # Syfte: Säkerställa att 'deploy' har ett lösenord och kan använda sudo med lösenord (inte passwordless)
+  # Viktiga moduler:
+  # - ansible.builtin.user: Hanterar användare och lösenord
+  # - ansible.builtin.lineinfile: Ändrar rader i filer (här sudoers)
+  # - validate: Säkerställer att ändringarna i sudoers inte bryter syntaxen

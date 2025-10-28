@@ -1,0 +1,48 @@
+---
+- name: Configure Prometheus on your local machine
+  hosts: localhost
+  connection: ansible.builtin.local
+
+  vars:
+    prometheus_config:
+      scrape_configs:
+        # Job: Prometheus själv
+        - job_name: 'prometheus'
+          scrape_interval: 5s
+          static_configs:
+            - targets: ['localhost:9090']
+
+        # Job: Node Exporters
+        - job_name: 'node'
+          scrape_interval: 5s
+          static_configs:
+            - targets:
+                - '192.168.121.194:9100'  # Webserver VM
+                - '192.168.121.233:9100'  # Database/annan Node VM
+
+  tasks:
+    - name: Write Prometheus config to /tmp/scrape-config.yml
+      ansible.builtin.copy:
+        content: "{{ prometheus_config }}"
+        dest: /tmp/scrape-config.yml
+        mode: "0644"
+      # Denna task skriver ut konfigurationen Prometheus kommer använda
+
+    - name: Ensure Prometheus container is running
+      containers.podman.podman_container:
+        name: prometheus
+        image: quay.io/prometheus/prometheus:latest
+        pod: new:prometheus
+        volumes:
+          - "/tmp/scrape-config.yml:/etc/prometheus/prometheus.yml"
+          - "prometheus_data:/data"
+        ports:
+          - "9090:9090"
+      # Startar Prometheus i en Podman-container med korrekt konfigurerad volym
+
+    - name: Ensure Node Exporter container is running
+      containers.podman.podman_container:
+        name: node-exporter
+        image: quay.io/prometheus/node-exporter:latest
+        pod: prometheus
+      # Startar Node Exporter i samma pod som Prometheus för lokala tester

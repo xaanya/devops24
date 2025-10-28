@@ -1,0 +1,32 @@
+---
+- name: Run the anagrammer module
+  hosts: localhost
+  gather_facts: false
+  vars:
+    message: "Hello world"  
+
+  tasks:
+    - name: Call anagrammer module 
+    # Här använder vi vår egen modul från library/
+    # ANSIBLE_LIBRARY=./library måste sättas när modules krös
+      anagrammer:
+        message: "{{ message }}"
+      register: result # vi sparar resultatet i variabeln 'result'
+
+    - name: Show results
+    # visar outputen från modulen (original + reversed + changed)
+      debug:
+        var: result
+
+# ============================================================
+# SAMMANFATTNING
+#
+# 1. Vi använder en custom Ansible-modul som ligger i library/anagrammer.py
+# 2. Modulen tar parametern 'message', vänder strängen och returnerar:
+#    - original_message
+#    - reversed_message
+#    - changed (True om de skiljer sig)
+# 3. Vi använder 'register' för att spara resultatet
+# 4. Vi använder 'debug' för att visa resultatet i playbook-outputen
+# 5. Syftet är att visa hur man skriver och kör en egen modul i Ansible
+# ============================================================
