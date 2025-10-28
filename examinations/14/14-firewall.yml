@@ -11,14 +11,18 @@
         - python3-firewall # Python-bibliotek för att Ansible ska kunna hantera firewalld
       state: present     # Se till att de är installerade
 
-  
   - name: Ensure firewalld service is enabled and running
     ansible.builtin.service:
       name: firewalld
       state: started     # Starta tjänsten direkt
       enabled: true     # Se till att den startar automatiskt vid boot
-
   
+  
+- name: Open http and https on webservers
+  hosts: web
+  become: true   # Vi behöver root-behörighet för att installera paket och ändra firewall
+
+  tasks:
   - name: Open http and https on webservers
     ansible.posix.firewalld:
       service: "{{ item }}"
@@ -28,16 +32,19 @@
     loop:
       - http
       - https
-    when: "'webserver' in group_names"  # Endast på webserver-gruppen
+    
+- name: Open mysql on dbservers
+  hosts: db
+  become: true   # Vi behöver root-behörighet för att installera paket och ändra firewall
 
-  
+  tasks:
   - name: Open mysql on dbservers
     ansible.posix.firewalld:
       service: mysql
       permanent: true    # Regler kvarstår efter reboot
       state: enabled
       immediate: yes
-    when: "'db' in group_names"        # Endast på dbserver-gruppen
+    
 
 # ----------------------------------------------------------
 # Sammanfattning :
